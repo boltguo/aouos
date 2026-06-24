@@ -1,72 +1,87 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/home/Nav.astro';
+import HomeFooter from '../../components/home/Footer.astro';
 import { projects } from '../../data/projects';
+
+const TILE_ROTATION = [1.1, -1.3, 0.9, -0.9, 1.2, -1.1, 0.8];
+const BEAT_ACCENT = [
+  '#0891B2',
+  '#7C3AED',
+  '#CA8A04',
+  '#0284C7',
+  '#BE185D',
+  '#0891B2',
+  '#7C3AED',
+];
 ---
 
 <Layout
   title="Projects — BoltGuo"
-  description="Project work by BoltGuo: web, AI, dashboards, and tooling."
+  description="Project work by BoltGuo: web, AI, dashboards, learning maps, and tooling."
 >
-  <div
-    class="bg-background-light relative min-h-screen overflow-x-hidden text-gray-900 transition-colors duration-300"
-  >
+  <div class="paper-page text-[var(--ink)]">
     <Nav />
 
-    <section class="relative z-10 pt-32 pb-16 lg:pt-44">
-      <div
-        class="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8"
-      >
-        <div class="space-y-4">
-          <h1
-            class="text-4xl font-bold tracking-tight text-gray-900 lg:text-5xl"
-          >
-            Building for the web &amp; AI
-          </h1>
-          <p class="max-w-2xl text-lg text-gray-600">
-            Interfaces, dashboards, and tools designed to stay simple, fast, and
-            reliable. Each project balances visual clarity with developer
-            ergonomics.
-          </p>
-        </div>
-      </div>
-    </section>
+    <main class="viz-main">
+      <section class="viz-hero">
+        <h1
+          class="font-canvas text-[clamp(2.25rem,5vw,3.5rem)] leading-[1.05] text-[var(--ink)]"
+        >
+          Projects
+        </h1>
+        <p
+          class="viz-muted mx-auto mt-5 max-w-2xl text-base leading-relaxed md:text-lg"
+        >
+          AOUOS projects shown in the same feature-row rhythm as VizLearn:
+          sketch, short explanation, and enough room to scan each idea.
+        </p>
+      </section>
 
-    <section class="relative z-10 pb-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <section class="viz-feature-section">
+        <ul class="viz-feature-list">
           {
-            projects.map((project) => (
-              <a
-                class="group relative border border-gray-200 p-8 transition-colors duration-300 hover:bg-white"
-                href={project.link}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <div class="plus-marker absolute -top-[6px] -left-[6px] z-20" />
-                <div class="plus-marker absolute -right-[6px] -bottom-[6px] z-20" />
-                <div class="mb-6 flex items-start justify-between">
-                  <span class="font-mono text-xs text-gray-400">
-                    {project.id}
-                  </span>
-                  <project.Icon class="h-5 w-5 text-gray-400 transition-colors" />
-                </div>
-                <h3 class="mb-3 text-lg font-bold text-gray-900">
-                  {project.title}
-                </h3>
-                <p class="mb-8 text-sm leading-relaxed text-gray-500">
-                  {project.description}
-                </p>
-                <div class="flex flex-wrap gap-2 font-mono text-[10px] tracking-wider text-gray-400 uppercase">
-                  {project.tech.map((item) => (
-                    <span class="border border-gray-200 px-2 py-1">{item}</span>
-                  ))}
-                </div>
-              </a>
-            ))
+            projects.map((project, index) => {
+              const flip = index % 2 === 1;
+              return (
+                <li class="viz-feature-row">
+                  <div class={`viz-feature-art ${flip ? 'viz-order-2' : ''}`}>
+                    <span
+                      aria-hidden="true"
+                      class="viz-beat-number"
+                      style={`color: ${BEAT_ACCENT[index]}`}
+                    >
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      class="viz-sketch-pad block no-underline"
+                      style={`rotate: ${TILE_ROTATION[index]}deg`}
+                    >
+                      <canvas
+                        class="sketch-canvas"
+                        data-sketch="project"
+                        data-project={project.id}
+                        width="480"
+                        height="260"
+                        aria-label={`${project.title} sketch`}
+                      />
+                    </a>
+                  </div>
+                  <div>
+                    <h2 class="viz-feature-title">{project.title}</h2>
+                    <p class="viz-feature-desc">{project.description}</p>
+                  </div>
+                </li>
+              );
+            })
           }
-        </div>
-      </div>
-    </section>
+        </ul>
+      </section>
+
+      <HomeFooter />
+    </main>
   </div>
 </Layout>

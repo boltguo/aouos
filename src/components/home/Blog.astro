@@ -1,6 +1,4 @@
 ---
-import { ArrowRight } from '@lucide/astro';
-
 interface BlogCard {
   slug: string;
   title: string;
@@ -18,55 +16,65 @@ const formatDate = (value: Date) =>
   });
 ---
 
-<section
-  class="bg-background-light relative z-10 overflow-hidden py-24"
-  id="blog"
->
-  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-    <div class="mb-12 text-center">
-      <span class="mb-2 block font-mono text-xs text-gray-400">02 / Blog</span>
-      <h2 class="text-4xl font-bold text-gray-900">Thoughts &amp; Insights</h2>
-    </div>
-
-    {
-      posts.length === 0 ? (
-        <div class="text-center text-sm text-gray-500">No posts yet.</div>
-      ) : (
-        <div class="space-y-10">
-          {posts.map((post) => (
-            <a
-              class="group relative block border border-gray-100 bg-white p-8 transition-colors"
-              href={`/blog/${post.slug}`}
-            >
-              <div class="bg-primary absolute top-0 left-0 h-full w-1 origin-top scale-y-0 transform transition-transform duration-300 group-hover:scale-y-100" />
-              <div class="mb-4 flex flex-col md:flex-row md:items-baseline md:justify-between">
-                <h3 class="text-2xl font-bold text-gray-900 transition-colors">
-                  {post.title}
-                </h3>
-                <span class="mt-2 shrink-0 font-mono text-xs text-gray-400 md:mt-0">
-                  {formatDate(post.date)}
-                </span>
-              </div>
-              <p class="mb-6 leading-relaxed text-gray-600">
-                {post.description}
-              </p>
-              <div class="text-primary flex items-center text-sm font-medium">
-                <span>Read Article</span>
-                <ArrowRight class="ml-2 h-4 w-4" />
-              </div>
-            </a>
-          ))}
+<section class="mx-auto max-w-5xl px-6 py-14 lg:py-20" id="blog">
+  {
+    posts.length === 0 ? (
+      <p class="viz-muted">No posts yet.</p>
+    ) : (
+      <>
+        <canvas
+          class="viz-divider"
+          data-sketch="divider"
+          data-roughness="2.4"
+          data-bowing="4"
+          width="900"
+          height="40"
+          aria-hidden="true"
+        />
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <h2 class="viz-kicker">Latest notes</h2>
+          <a class="aouos-text-link" href="/blog">
+            View all notes →
+          </a>
         </div>
-      )
-    }
-
-    <div class="mt-12 text-center">
-      <a
-        class="inline-block border border-gray-300 px-8 py-3 text-sm font-medium transition-colors hover:bg-gray-50"
-        href="/blog"
-      >
-        View All Posts
-      </a>
-    </div>
-  </div>
+        <ul class="flex flex-col gap-6">
+          {posts.map((post) => (
+            <li>
+              <a class="viz-blog-card group" href={`/blog/${post.slug}`}>
+                <canvas
+                  class="rough-frame-canvas"
+                  data-rough-frame
+                  aria-hidden="true"
+                />
+                <div class="relative flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:gap-8 sm:p-7">
+                  <div class="shrink-0 sm:w-[42%] sm:max-w-[300px]">
+                    <canvas
+                      class="sketch-canvas"
+                      data-sketch="blog"
+                      data-slug={post.slug}
+                      width="320"
+                      height="180"
+                      aria-label={`${post.title} sketch`}
+                    />
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-[rgba(74,65,56,0.62)]">
+                      <span class="viz-chip">AOUOS</span>
+                      <span>{formatDate(post.date)}</span>
+                    </div>
+                    <h3 class="mt-2.5 text-xl font-semibold text-[var(--ink)] transition-colors group-hover:text-[#2563eb] sm:text-2xl">
+                      {post.title}
+                    </h3>
+                    <p class="mt-2 text-base leading-relaxed text-[rgba(74,65,56,0.68)]">
+                      {post.description}
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
 </section>

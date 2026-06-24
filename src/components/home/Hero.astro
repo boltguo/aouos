@@ -1,117 +1,30 @@
----
-import { ArrowRight } from '@lucide/astro';
----
-
-<section
-  class="border-border-light relative z-10 border-b pt-40 pb-28 lg:pt-64 lg:pb-48"
-  id="home"
->
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-24">
-      <div class="relative space-y-8">
-        <div
-          class="absolute -top-12 left-0 border border-gray-200 bg-white px-2 py-1 font-mono text-[10px] tracking-widest text-gray-400 uppercase"
-        >
-          OPEN FOR COLLABORATION <span class="text-primary">+</span>
-        </div>
-        <h1
-          class="text-5xl leading-none font-bold tracking-tight text-gray-900 lg:text-7xl"
-        >
-          Hello, I'm <br />
-          <span class="text-primary">Bolt Guo</span>
-        </h1>
-        <h2 class="text-xl font-light text-gray-800 lg:text-2xl">
-          Frontend Developer &amp; <span class="text-gray-500">AI Explorer</span
-          >
-        </h2>
-        <p class="max-w-md text-lg leading-relaxed text-gray-600">
-          Building high-performance web applications and exploring the future of
-          human-AI collaboration. I focus on clean code, seamless UX, and
-          engineering excellence.
-        </p>
-        <div class="flex flex-wrap gap-4 pt-4">
-          <a
-            class="flex items-center bg-gray-900 px-8 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90"
-            href="/projects"
-          >
-            View Projects <ArrowRight class="ml-2 h-4 w-4" />
-          </a>
-          <a
-            class="flex items-center border border-gray-300 bg-transparent px-8 py-3 text-sm font-medium transition-colors hover:bg-gray-50"
-            href="/blog"
-          >
-            Read Blog
-            <ArrowRight class="ml-2 h-4 w-4" />
-          </a>
-        </div>
-        <div class="pt-12">
-          <div
-            class="flex items-center space-x-6 font-mono text-[10px] tracking-wider text-gray-400 uppercase"
-          >
-            <span>Tech Stack</span>
-            <span class="text-gray-900">React</span>
-            <span class="text-gray-900">Vue.js</span>
-            <span class="text-gray-900">TypeScript</span>
-            <span class="text-gray-900">AI</span>
-          </div>
-        </div>
-      </div>
-      <div class="group relative">
-        <div class="absolute -top-6 -right-6 text-gray-300">
-          <svg
-            fill="currentColor"
-            height="60"
-            viewBox="0 0 100 100"
-            width="60"
-            aria-hidden="true"
-          >
-            <pattern
-              height="20"
-              id="dots"
-              patternUnits="userSpaceOnUse"
-              width="20"
-              x="0"
-              y="0"
-            >
-              <circle cx="2" cy="2" r="1"></circle>
-            </pattern>
-            <rect fill="url(#dots)" height="100" width="100"></rect>
-          </svg>
-        </div>
-        <div
-          class="relative z-10 transform overflow-hidden rounded-lg border border-gray-800 bg-[#1e1e1e] shadow-2xl transition-transform duration-500 group-hover:-translate-y-2"
-        >
-          <div
-            class="flex items-center justify-between border-b border-[#333] bg-[#252526] px-4 py-3"
-          >
-            <div class="flex space-x-2">
-              <div class="h-3 w-3 rounded-full bg-[#ff5f56]"></div>
-              <div class="h-3 w-3 rounded-full bg-[#ffbd2e]"></div>
-              <div class="h-3 w-3 rounded-full bg-[#27c93f]"></div>
-            </div>
-            <div class="font-mono text-xs text-gray-500">
-              boltguo/profile.ts
-            </div>
-            <div class="w-4" aria-hidden="true"></div>
-          </div>
-          <div class="overflow-x-auto p-6">
-            <pre
-              class="code-font text-sm leading-relaxed">
-<span class="text-[#c586c0]">interface</span> <span class="text-[#4ec9b0]">Developer</span> &#123;
-  <span class="text-[#9cdcfe]">name</span>: <span class="text-[#4ec9b0]">string</span>;
-  <span class="text-[#9cdcfe]">skills</span>: <span class="text-[#4ec9b0]">string</span>[];
-  <span class="text-[#9cdcfe]">passion</span>: <span class="text-[#4ec9b0]">string</span>;
-&#125;
-<span class="text-[#569cd6]">const</span> <span class="text-[#9cdcfe]">me</span>: <span class="text-[#4ec9b0]">Developer</span> = &#123;
-  <span class="text-[#9cdcfe]">name</span>: <span class="text-[#ce9178]">'BoltGuo'</span>,
-  <span class="text-[#9cdcfe]">skills</span>: [<span class="text-[#ce9178]">'Frontend'</span>, <span class="text-[#ce9178]">'AI'</span>],
-  <span class="text-[#9cdcfe]">passion</span>: <span class="text-[#ce9178]">'Building the future'</span>
-&#125;;
-<span class="text-[#c586c0]">export</span> <span class="text-[#c586c0]">default</span> <span class="text-[#9cdcfe]">me</span>;
-<span class="ml-1 inline-block h-4 w-2 animate-pulse align-middle bg-primary" /></pre>
-          </div>
-        </div>
-      </div>
+<section class="aouos-hero">
+  <div class="aouos-hero-copy">
+    <p class="viz-kicker">AOUOS / Bolt Guo</p>
+    <h1 class="aouos-hero-title">Hello, I'm Bolt Guo.</h1>
+    <p class="viz-muted mt-5 max-w-2xl text-base leading-relaxed md:text-lg">
+      Frontend developer working on AI tools, product interfaces, and practical
+      web projects. AOUOS collects the projects, notes, and experiments I
+      actually ship.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a class="aouos-link-button" href="/projects">Projects</a>
+      <a class="aouos-link-button secondary" href="/blog">Blog</a>
     </div>
   </div>
+
+  <pre
+    class="aouos-hero-code"
+    aria-label="Bolt Guo profile code block"><code><span class="code-dim">01</span> <span class="code-purple">interface</span> <span class="code-green">Developer</span> &#123;
+<span class="code-dim">02</span>   <span class="code-blue">name</span>: <span class="code-green">string</span>;
+<span class="code-dim">03</span>   <span class="code-blue">focus</span>: <span class="code-green">string</span>[];
+<span class="code-dim">04</span>   <span class="code-blue">ships</span>: <span class="code-green">string</span>;
+<span class="code-dim">05</span> &#125;
+<span class="code-dim">06</span>
+<span class="code-dim">07</span> <span class="code-purple">const</span> <span class="code-blue">me</span>: <span class="code-green">Developer</span> = &#123;
+<span class="code-dim">08</span>   <span class="code-blue">name</span>: <span class="code-string">'Bolt Guo'</span>,
+<span class="code-dim">09</span>   <span class="code-blue">focus</span>: [<span class="code-string">'frontend'</span>, <span class="code-string">'AI'</span>, <span class="code-string">'tools'</span>],
+<span class="code-dim">10</span>   <span class="code-blue">ships</span>: <span class="code-string">'projects, notes, tools'</span>
+<span class="code-dim">11</span> &#125;;
+<span class="code-dim">12</span> <span class="code-purple">export</span> <span class="code-purple">default</span> <span class="code-blue">me</span>;</code></pre>
 </section>

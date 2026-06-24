@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/home/Nav.astro';
-import { ArrowLeft, Calendar } from '@lucide/astro';
+import HomeFooter from '../../components/home/Footer.astro';
 import { getEntry, getCollection, render } from 'astro:content';
 
 const { slug } = Astro.params;
@@ -13,12 +13,35 @@ if (!post) {
 
 const { Content } = await render(post);
 const data = post.data;
+const posts = (await getCollection('blog')).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+const currentIndex = posts.findIndex((entry) => entry.id === post.id);
+const olderPost =
+  currentIndex >= 0 && currentIndex < posts.length - 1
+    ? posts[currentIndex + 1]
+    : null;
+const newerPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
+
 const formatDate = (value: Date) =>
   value.toLocaleDateString('en-US', {
-    month: 'short',
-    day: '2-digit',
+    month: 'long',
+    day: 'numeric',
     year: 'numeric',
   });
+
+const estimateReadingMinutes = (body = '') => {
+  const text = body.replace(/```[\s\S]*?```/g, ' ');
+  const cjkCount = text.match(/[\u4e00-\u9fff]/gu)?.length ?? 0;
+  const latinWordCount =
+    text
+      .replace(/[\u4e00-\u9fff]/gu, ' ')
+      .match(/[A-Za-z0-9_]+(?:[-'][A-Za-z0-9_]+)*/g)?.length ?? 0;
+
+  return Math.max(1, Math.ceil((latinWordCount + cjkCount / 2) / 220));
+};
+
+const readingMinutes = estimateReadingMinutes(post.body);
 
 export async function getStaticPaths() {
   const blogPosts = await getCollection('blog');
@@ -29,69 +52,102 @@ export async function getStaticPaths() {
 ---
 
 <Layout title={data.title} description={data.description}>
-  <div
-    class="bg-background-light relative min-h-screen overflow-x-hidden text-gray-900 transition-colors duration-300"
-  >
+  <div class="article-reading-page">
     <Nav />
 
-    <article class="relative z-10 pt-24 pb-40 lg:pt-30">
-      <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        <!-- Back link -->
-        <a
-          class="hover:text-primary mb-10 inline-flex items-center text-sm font-medium text-gray-700 transition-colors duration-200"
-          href="/blog"
-        >
-          <ArrowLeft class="mr-2 h-4 w-4" />
-          Back to blog
-        </a>
+    <div class="viz-main">
+      <article>
+        <section class="viz-article-hero">
+          <div class="viz-article-glow" aria-hidden="true"></div>
+          <div class="viz-article-dots" aria-hidden="true"></div>
 
-        <!-- Header -->
-        <header class="mb-10">
-          <div class="mb-5 flex items-center gap-2 text-gray-400">
-            <Calendar class="h-3.5 w-3.5" />
-            <time class="font-mono text-xs tracking-wide"
-              >{formatDate(data.date)}</time
+          <div class="viz-article-hero-inner">
+            <a
+              class="viz-article-back"
+              href="/blog"
+              aria-label="Back to all posts"
             >
-          </div>
-          <h1
-            class="mb-5 text-3xl leading-snug font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-snug lg:text-[2.75rem] lg:leading-snug"
-          >
-            {data.title}
-          </h1>
-          <p class="text-base leading-relaxed text-gray-500 sm:text-lg">
-            {data.description}
-          </p>
-        </header>
+              ← All posts
+            </a>
 
-        <!-- Cover image -->
-        {
-          data.cover && (
-            <div class="mb-12 overflow-hidden rounded-lg border border-gray-100">
-              <img
-                src={data.cover}
-                alt={data.title}
-                class="h-auto w-full object-cover"
-                loading="eager"
-                onerror="this.parentElement.style.display='none'"
-              />
+            <div class="viz-article-hero-grid">
+              <header class="viz-article-header">
+                <p class="viz-article-category">AOUOS</p>
+                <h1 class="viz-article-title">{data.title}</h1>
+                <p class="viz-article-description">{data.description}</p>
+                <div class="viz-article-meta">
+                  <time datetime={data.date.toISOString()}
+                    >{formatDate(data.date)}</time
+                  >
+                  <span aria-hidden="true">·</span>
+                  <span>{readingMinutes} min read</span>
+                </div>
+              </header>
+
+              <div class="viz-article-art" aria-hidden="true">
+                <canvas
+                  class="sketch-canvas"
+                  data-sketch="blog"
+                  data-slug={post.id}
+                  width="320"
+                  height="180"></canvas>
+              </div>
             </div>
-          )
-        }
+          </div>
+        </section>
 
-        <!-- Divider -->
-        <div class="mb-12 h-px bg-gray-200"></div>
+        <section class="viz-article-content">
+          {
+            data.cover && (
+              <div class="viz-article-cover">
+                <img
+                  src={data.cover}
+                  alt={data.title}
+                  class="h-auto w-full object-cover"
+                  loading="eager"
+                  onerror="this.parentElement.style.display='none'"
+                />
+              </div>
+            )
+          }
 
-        <!-- Article body -->
-        <div class="prose prose-aouos prose-lg max-w-none">
-          <Content />
-        </div>
-      </div>
-    </article>
+          <div class="viz-article-body">
+            <Content />
+          </div>
 
-    <!-- Scroll to top button -->
+          <nav class="viz-series-nav" aria-label="Continue the series">
+            <p class="viz-kicker">Continue the series</p>
+            <div class="viz-series-grid">
+              {
+                olderPost && (
+                  <a class="viz-series-link" href={`/blog/${olderPost.id}`}>
+                    <span>Previous</span>
+                    <strong>{olderPost.data.title}</strong>
+                  </a>
+                )
+              }
+              {
+                newerPost && (
+                  <a
+                    class="viz-series-link next"
+                    href={`/blog/${newerPost.id}`}
+                  >
+                    <span>Next</span>
+                    <strong>{newerPost.data.title}</strong>
+                  </a>
+                )
+              }
+            </div>
+          </nav>
+        </section>
+      </article>
+
+      <HomeFooter />
+    </div>
+
     <button
       id="scroll-to-top"
-      class="fixed right-6 bottom-8 z-50 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-gray-200 bg-white shadow-md transition-all duration-300 hover:bg-gray-50 hover:shadow-lg"
+      class="viz-scroll-top"
       style="opacity: 0; transform: translateY(10px); pointer-events: none;"
       aria-label="Scroll to top"
     >
@@ -105,7 +161,7 @@ export async function getStaticPaths() {
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="text-gray-500"><path d="m18 15-6-6-6 6"></path></svg
+        aria-hidden="true"><path d="m18 15-6-6-6 6"></path></svg
       >
     </button>
   </div>

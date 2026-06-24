@@ -29,14 +29,14 @@ A skill does not replace Claude's tools. It teaches Claude how to orchestrate th
 
 This is where most explanations get fuzzy, so it is worth being precise.
 
-| Mechanism | What it is | Best used for |
-|---|---|---|
-| Tools | Raw actions Claude can take | Reading files, running commands, editing code, calling MCP tools |
-| Skills | Reusable on-demand playbooks | Repeatable workflows like PR review, deploys, deep research |
-| `CLAUDE.md` | Persistent instructions loaded every session | Project conventions, build commands, architecture rules |
-| `.claude/rules/` | Scoped persistent instructions | Path-specific rules in larger repos |
-| Subagents | Separate execution contexts with their own prompt, tools, and model | Parallel work, isolated review, specialized research |
-| MCP | A protocol for exposing tools, resources, and prompts | Connecting Claude to GitHub, databases, Figma, Notion, internal APIs |
+| Mechanism        | What it is                                                          | Best used for                                                        |
+| ---------------- | ------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Tools            | Raw actions Claude can take                                         | Reading files, running commands, editing code, calling MCP tools     |
+| Skills           | Reusable on-demand playbooks                                        | Repeatable workflows like PR review, deploys, deep research          |
+| `CLAUDE.md`      | Persistent instructions loaded every session                        | Project conventions, build commands, architecture rules              |
+| `.claude/rules/` | Scoped persistent instructions                                      | Path-specific rules in larger repos                                  |
+| Subagents        | Separate execution contexts with their own prompt, tools, and model | Parallel work, isolated review, specialized research                 |
+| MCP              | A protocol for exposing tools, resources, and prompts               | Connecting Claude to GitHub, databases, Figma, Notion, internal APIs |
 
 The clean mental model is:
 
@@ -56,7 +56,7 @@ Here is a realistic example:
 ---
 name: review-pr
 description: Review a pull request for regressions, edge cases, and missing tests. Use when the user asks for a PR review or asks whether a change is safe.
-argument-hint: "[pr-number]"
+argument-hint: '[pr-number]'
 context: fork
 agent: Explore
 allowed-tools:

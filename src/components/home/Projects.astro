@@ -29,32 +29,34 @@ const homeProjects = HOME_PROJECT_IDS.map(
       class="grid grid-cols-1 gap-0 divide-y divide-gray-200 border-t border-b border-gray-200 md:grid-cols-2 md:divide-x md:divide-y-0 lg:grid-cols-4"
     >
       {
-        homeProjects.map(({ id, title, description, tech, Icon, link }, index) => (
-          <a
-            href={link}
-            target="_blank"
-            rel="noreferrer"
-            class="group relative p-8 transition-colors duration-300 hover:bg-white"
-          >
-            <div class="plus-marker absolute -top-[6px] -left-[6px] z-20" />
-            {index === homeProjects.length - 1 && (
-              <div class="plus-marker absolute -top-[6px] -right-[6px] z-20" />
-            )}
-            <div class="mb-6 flex items-start justify-between">
-              <span class="font-mono text-xs text-gray-400">{id}</span>
-              <Icon class="h-5 w-5 text-gray-400 transition-colors" />
-            </div>
-            <h3 class="mb-3 text-lg font-bold text-gray-900">{title}</h3>
-            <p class="mb-12 text-sm leading-relaxed text-gray-500">
-              {description}
-            </p>
-            <div class="absolute bottom-8 left-8 space-y-1 font-mono text-[10px] tracking-wider text-gray-400 uppercase">
-              {tech.map((item) => (
-                <div class="block">{item}</div>
-              ))}
-            </div>
-          </a>
-        ))
+        homeProjects.map(
+          ({ id, title, description, tech, Icon, link }, index) => (
+            <a
+              href={link}
+              target="_blank"
+              rel="noreferrer"
+              class="group relative p-8 transition-colors duration-300 hover:bg-white"
+            >
+              <div class="plus-marker absolute -top-[6px] -left-[6px] z-20" />
+              {index === homeProjects.length - 1 && (
+                <div class="plus-marker absolute -top-[6px] -right-[6px] z-20" />
+              )}
+              <div class="mb-6 flex items-start justify-between">
+                <span class="font-mono text-xs text-gray-400">{id}</span>
+                <Icon class="h-5 w-5 text-gray-400 transition-colors" />
+              </div>
+              <h3 class="mb-3 text-lg font-bold text-gray-900">{title}</h3>
+              <p class="mb-12 text-sm leading-relaxed text-gray-500">
+                {description}
+              </p>
+              <div class="absolute bottom-8 left-8 space-y-1 font-mono text-[10px] tracking-wider text-gray-400 uppercase">
+                {tech.map((item) => (
+                  <div class="block">{item}</div>
+                ))}
+              </div>
+            </a>
+          )
+        )
       }
     </div>
   </div>

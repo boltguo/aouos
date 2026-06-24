@@ -2,16 +2,16 @@
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/home/Nav.astro';
 import { ArrowLeft, Calendar } from '@lucide/astro';
-import { getEntryBySlug, getCollection } from 'astro:content';
+import { getEntry, getCollection, render } from 'astro:content';
 
 const { slug } = Astro.params;
-const post = slug ? await getEntryBySlug('blog', slug) : null;
+const post = slug ? await getEntry('blog', slug) : null;
 
 if (!post) {
   throw new Error(`Blog post not found for slug: ${slug}`);
 }
 
-const { Content } = await post.render();
+const { Content } = await render(post);
 const data = post.data;
 const formatDate = (value: Date) =>
   value.toLocaleDateString('en-US', {
@@ -23,7 +23,7 @@ const formatDate = (value: Date) =>
 export async function getStaticPaths() {
   const blogPosts = await getCollection('blog');
   return blogPosts.map((entry) => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.id },
   }));
 }
 ---
@@ -38,7 +38,7 @@ export async function getStaticPaths() {
       <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <!-- Back link -->
         <a
-          class="mb-10 inline-flex items-center text-sm font-medium text-gray-700 transition-colors duration-200 hover:text-primary"
+          class="hover:text-primary mb-10 inline-flex items-center text-sm font-medium text-gray-700 transition-colors duration-200"
           href="/blog"
         >
           <ArrowLeft class="mr-2 h-4 w-4" />
@@ -95,7 +95,18 @@ export async function getStaticPaths() {
       style="opacity: 0; transform: translateY(10px); pointer-events: none;"
       aria-label="Scroll to top"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500"><path d="m18 15-6-6-6 6"/></svg>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="text-gray-500"><path d="m18 15-6-6-6 6"></path></svg
+      >
     </button>
   </div>
 </Layout>

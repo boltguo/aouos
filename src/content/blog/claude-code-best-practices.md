@@ -6,7 +6,7 @@ date: 2026-04-08
 
 Claude Code is more than an autocomplete tool — it's an autonomous agent that can read your codebase, run commands, edit files, write tests, and open pull requests. But treating it like a smarter Copilot will leave most of its capability on the table.
 
-Getting the most out of it means learning to work *with* it: onboarding it properly, giving it clear direction, and building feedback loops so it can verify its own work.
+Getting the most out of it means learning to work _with_ it: onboarding it properly, giving it clear direction, and building feedback loops so it can verify its own work.
 
 ## 1. Set Up `CLAUDE.md` — The Permanent Brain
 
@@ -20,16 +20,19 @@ Run `/init` inside a project to generate a starter file, then refine it manually
 # CLAUDE.md
 
 ## Stack
+
 - Astro 5 + Tailwind CSS v4
 - TypeScript strict mode
 - Named exports only (no default exports)
 
 ## Conventions
+
 - Components live in src/components/<feature>/
 - Use Lucide icons from @lucide/astro
 - Date format: YYYY-MM-DD
 
 ## Do NOT
+
 - Change existing API contracts without explicit approval
 - Install new dependencies without asking first
 - Use class-based React components
@@ -56,11 +59,11 @@ For anything beyond a trivial change, don't let Claude jump straight into writin
 
 The workflow looks like this:
 
-1. **Explore** (Plan Mode): *"Read `src/auth/` and understand how sessions work."*
-2. **Plan**: *"I want to add Google OAuth. List the files that need to change and outline a step-by-step implementation plan."*
+1. **Explore** (Plan Mode): _"Read `src/auth/` and understand how sessions work."_
+2. **Plan**: _"I want to add Google OAuth. List the files that need to change and outline a step-by-step implementation plan."_
 3. **Review the plan** — push back on assumptions, correct direction before any code is written. Press `Ctrl+G` to edit the plan in your external editor.
-4. **Implement** (Normal Mode): *"Execute the plan. Write tests first, then the implementation."*
-5. **Commit**: *"Commit with a descriptive message and open a PR."*
+4. **Implement** (Normal Mode): _"Execute the plan. Write tests first, then the implementation."_
+5. **Commit**: _"Commit with a descriptive message and open a PR."_
 
 This mirrors a proper code review cycle: small, reviewable steps rather than one massive unreviewed diff.
 
@@ -76,8 +79,8 @@ For UI work, paste in a design screenshot and ask Claude to compare its output a
 
 **A better prompt pattern:**
 
-- ❌ *"Implement email validation"*
-- ✅ *"Write `validateEmail`. Include tests for: valid address, missing @, empty string. Run the tests after implementing and fix any failures. Explain the root cause of any bug you find."*
+- ❌ _"Implement email validation"_
+- ✅ _"Write `validateEmail`. Include tests for: valid address, missing @, empty string. Run the tests after implementing and fix any failures. Explain the root cause of any bug you find."_
 
 The difference is whether Claude has a success criterion it can check — not just one it claims to have met.
 
@@ -91,6 +94,7 @@ Two tools help:
 - **`/compact`** — asks Claude to summarize essential decisions while freeing up token space. The key upgrade: **`/compact` accepts arguments**. Instead of blind compression, direct it: `/compact Keep the auth logic context, drop the CSS exploration`. This gives you precise control over what survives.
 
 Other habits that help:
+
 - Reference files with `@filename` instead of pasting their contents into the chat.
 - Let Claude `grep` and `read` what it needs rather than dumping everything upfront.
 - For large projects, break work into sub-tasks with separate sessions.
@@ -100,9 +104,11 @@ Other habits that help:
 Claude performs best with a clear, targeted goal — not a wall of vague context.
 
 **Less effective:**
+
 > "My app is slow sometimes, maybe check the rendering?"
 
 **More effective:**
+
 > "The `<ProjectList>` component re-renders on every keystroke. Fix it so it only re-renders when the filtered results actually change."
 
 Specificity removes ambiguity and lets Claude work immediately instead of asking clarifying questions. Point it at the file, not a description of the file.

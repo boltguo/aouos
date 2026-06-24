@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Nav from '../../components/home/Nav.astro';
 import HomeFooter from '../../components/home/Footer.astro';
 import { projects } from '../../data/projects';
 
@@ -21,8 +20,6 @@ const BEAT_ACCENT = [
   description="Project work by BoltGuo: web, AI, dashboards, learning maps, and tooling."
 >
   <div class="paper-page text-[var(--ink)]">
-    <Nav />
-
     <main class="viz-main">
       <section class="viz-hero">
         <h1
@@ -44,36 +41,40 @@ const BEAT_ACCENT = [
             projects.map((project, index) => {
               const flip = index % 2 === 1;
               return (
-                <li class="viz-feature-row">
-                  <div class={`viz-feature-art ${flip ? 'viz-order-2' : ''}`}>
-                    <span
-                      aria-hidden="true"
-                      class="viz-beat-number"
-                      style={`color: ${BEAT_ACCENT[index]}`}
-                    >
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noreferrer"
-                      class="viz-sketch-pad block no-underline"
-                      style={`rotate: ${TILE_ROTATION[index]}deg`}
-                    >
-                      <canvas
-                        class="sketch-canvas"
-                        data-sketch="project"
-                        data-project={project.id}
-                        width="480"
-                        height="260"
-                        aria-label={`${project.title} sketch`}
-                      />
-                    </a>
-                  </div>
-                  <div>
-                    <h2 class="viz-feature-title">{project.title}</h2>
-                    <p class="viz-feature-desc">{project.description}</p>
-                  </div>
+                <li>
+                  <a
+                    class="viz-feature-row viz-feature-link"
+                    href={project.link}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <div class={`viz-feature-art ${flip ? 'viz-order-2' : ''}`}>
+                      <span
+                        aria-hidden="true"
+                        class="viz-beat-number"
+                        style={`color: ${BEAT_ACCENT[index]}`}
+                      >
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <div
+                        class="viz-sketch-pad"
+                        style={`rotate: ${TILE_ROTATION[index]}deg`}
+                      >
+                        <canvas
+                          class="sketch-canvas"
+                          data-sketch="project"
+                          data-project={project.id}
+                          width="480"
+                          height="260"
+                          aria-label={`${project.title} sketch`}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <h2 class="viz-feature-title">{project.title}</h2>
+                      <p class="viz-feature-desc">{project.description}</p>
+                    </div>
+                  </a>
                 </li>
               );
             })

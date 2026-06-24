@@ -2,7 +2,6 @@
 title: Google 账号全方位迁移美区完整指南
 description: 从付款资料、Play 商店到全局关联地区，三个层面彻底将 Google 账号迁移到美国区，解锁最完整的数字内容与 AI 服务生态。
 date: 2026-03-08
-cover: /images/google-us-migration-cover.webp
 ---
 
 越来越多人想把 Google 账号迁移到美区，解锁更丰富的数字内容生态。但 Google 的地区判定远比想象中复杂——它分为**三层**，需要逐步处理。这篇文章会带你从底层到表层，完成一次彻底的迁移。

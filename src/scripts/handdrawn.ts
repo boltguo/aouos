@@ -40,10 +40,17 @@ const boot = async () => {
 
   resizeObserver?.disconnect();
   resizeObserver = new ResizeObserver(scheduleDraw);
+  const observed = new Set<Element>();
   document
-    .querySelectorAll<HTMLCanvasElement>('canvas[data-rough-frame]')
+    .querySelectorAll<HTMLCanvasElement>(
+      'canvas[data-rough-frame], canvas[data-sketch]'
+    )
     .forEach((canvas) => {
-      if (canvas.parentElement) resizeObserver?.observe(canvas.parentElement);
+      const parent = canvas.parentElement;
+      if (parent && !observed.has(parent)) {
+        observed.add(parent);
+        resizeObserver?.observe(parent);
+      }
     });
 
   window.removeEventListener('resize', scheduleDraw);

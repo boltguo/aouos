@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Nav from '../../components/home/Nav.astro';
 import HomeFooter from '../../components/home/Footer.astro';
 import { getEntry, getCollection, render } from 'astro:content';
 
@@ -53,9 +52,7 @@ export async function getStaticPaths() {
 
 <Layout title={data.title} description={data.description}>
   <div class="article-reading-page">
-    <Nav />
-
-    <div class="viz-main">
+    <main class="viz-main">
       <article>
         <section class="viz-article-hero">
           <div class="viz-article-glow" aria-hidden="true"></div>
@@ -97,20 +94,6 @@ export async function getStaticPaths() {
         </section>
 
         <section class="viz-article-content">
-          {
-            data.cover && (
-              <div class="viz-article-cover">
-                <img
-                  src={data.cover}
-                  alt={data.title}
-                  class="h-auto w-full object-cover"
-                  loading="eager"
-                  onerror="this.parentElement.style.display='none'"
-                />
-              </div>
-            )
-          }
-
           <div class="viz-article-body">
             <Content />
           </div>
@@ -143,7 +126,7 @@ export async function getStaticPaths() {
       </article>
 
       <HomeFooter />
-    </div>
+    </main>
 
     <button
       id="scroll-to-top"

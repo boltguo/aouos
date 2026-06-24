@@ -1,8 +1,8 @@
 import {
   INK,
-  MONO,
   PENCIL,
   TRACK,
+  type DrawEnv,
   arrow,
   ellipse,
   labelChip,
@@ -14,15 +14,242 @@ import {
   text,
 } from './core';
 
-const drawLessonMap = (canvas: HTMLCanvasElement) => {
+const DEG = Math.PI / 180;
+
+type ShapeOptions = {
+  stroke?: string;
+  strokeWidth?: number;
+  roughness?: number;
+  seed?: number;
+  fill?: string;
+  fillStyle?: 'solid' | 'hachure' | 'cross-hatch' | 'zigzag' | 'dots';
+};
+
+const polygon = (
+  env: DrawEnv,
+  points: [number, number][],
+  opts: ShapeOptions = {}
+) => {
+  env.rc.polygon(points, {
+    roughness: 1.1,
+    strokeWidth: 2.2,
+    seed: env.seed,
+    fill: 'transparent',
+    ...opts,
+  });
+};
+
+const rotatedEllipse = (
+  env: DrawEnv,
+  cx: number,
+  cy: number,
+  width: number,
+  height: number,
+  angleDeg: number,
+  opts: ShapeOptions = {}
+) => {
+  env.ctx.save();
+  env.ctx.translate(cx, cy);
+  env.ctx.rotate(angleDeg * DEG);
+  env.rc.ellipse(0, 0, width, height, {
+    roughness: 1,
+    strokeWidth: 2.2,
+    seed: env.seed,
+    fill: 'transparent',
+    ...opts,
+  });
+  env.ctx.restore();
+};
+
+const arc = (
+  env: DrawEnv,
+  cx: number,
+  cy: number,
+  radius: number,
+  startDeg: number,
+  endDeg: number,
+  opts: ShapeOptions = {}
+) => {
+  const sx = cx + radius * Math.cos(startDeg * DEG);
+  const sy = cy + radius * Math.sin(startDeg * DEG);
+  const ex = cx + radius * Math.cos(endDeg * DEG);
+  const ey = cy + radius * Math.sin(endDeg * DEG);
+  const large = endDeg - startDeg > 180 ? 1 : 0;
+  env.rc.path(`M ${sx} ${sy} A ${radius} ${radius} 0 ${large} 1 ${ex} ${ey}`, {
+    roughness: 1,
+    strokeWidth: 5,
+    seed: env.seed,
+    fill: 'transparent',
+    ...opts,
+  });
+};
+
+// 01 — VizLearn: sorting bars (algorithms) + mini tree (data structures)
+const drawVizLearnSketch = (canvas: HTMLCanvasElement) => {
+  const env = prepareCanvas(canvas, 480, 260);
+  if (!env) return;
+
+  text(env, 'visualize', 54, 46, 23, PENCIL);
+
+  const baseline = 192;
+  const barX = [54, 92, 130, 168, 206];
+  const barH = [58, 96, 124, 80, 104];
+  const compare = [false, true, true, false, false];
+  barX.forEach((x, index) => {
+    const tone = compare[index] ? palette.comparing : palette.idle;
+    rect(env, {
+      x,
+      y: baseline - barH[index],
+      width: 28,
+      height: barH[index],
+      fill: tone.bg,
+      stroke: tone.border,
+      strokeWidth: 2.2,
+      roughness: 1.05,
+      radius: 7,
+      seed: env.seed + index,
+    });
+  });
+  line(env, 48, baseline, 240, baseline, env.seed + 9, INK, 2.2, 1);
+
+  node(env, 350, 80, '7', palette.idle, env.seed + 20);
+  node(env, 312, 152, '3', palette.matched, env.seed + 21);
+  node(env, 392, 152, '9', palette.comparing, env.seed + 22);
+  arrow(env, 336, 98, 318, 130, env.seed + 30, PENCIL);
+  arrow(env, 364, 98, 386, 130, env.seed + 31, PENCIL);
+
+  text(env, 'arrays · trees · graphs', 240, 236, 19, INK, 'center', 700);
+};
+
+// 02 — AouoAI: usage dashboard with a trend line and a budget gauge
+const drawAouoAiSketch = (canvas: HTMLCanvasElement) => {
   const env = prepareCanvas(canvas, 480, 260);
   if (!env) return;
 
   rect(env, {
     x: 46,
     y: 44,
-    width: 388,
-    height: 162,
+    width: 392,
+    height: 152,
+    fill: 'transparent',
+    stroke: INK,
+    strokeWidth: 2.4,
+    roughness: 1.1,
+    radius: 14,
+    seed: env.seed + 1,
+  });
+  text(env, 'ai usage', 66, 72, 21, PENCIL);
+  line(env, 60, 84, 424, 84, env.seed + 2, TRACK, 1.8, 1);
+
+  const points: [number, number][] = [
+    [72, 168],
+    [110, 150],
+    [148, 158],
+    [186, 124],
+    [224, 134],
+    [262, 100],
+    [298, 110],
+  ];
+  for (let i = 0; i < points.length - 1; i += 1) {
+    line(
+      env,
+      points[i][0],
+      points[i][1],
+      points[i + 1][0],
+      points[i + 1][1],
+      env.seed + 10 + i,
+      palette.idle.border,
+      2.6,
+      0.8
+    );
+  }
+  points.forEach((p, index) => {
+    ellipse(env, {
+      cx: p[0],
+      cy: p[1],
+      width: 7,
+      height: 7,
+      fill: palette.idle.border,
+      stroke: palette.idle.border,
+      strokeWidth: 1,
+      seed: env.seed + 40 + index,
+    });
+  });
+
+  ellipse(env, {
+    cx: 372,
+    cy: 138,
+    width: 64,
+    height: 64,
+    fill: 'transparent',
+    stroke: TRACK,
+    strokeWidth: 4,
+    roughness: 1,
+    seed: env.seed + 50,
+  });
+  arc(env, 372, 138, 32, -90, 155, {
+    stroke: palette.comparing.border,
+    strokeWidth: 5,
+    seed: env.seed + 51,
+  });
+  text(env, '68%', 372, 144, 16, INK, 'center', 700);
+  text(env, 'budget', 372, 182, 14, PENCIL, 'center');
+
+  text(env, 'token spend · models · budget', 240, 234, 17, PENCIL, 'center');
+};
+
+// 03 — AOUI: design tokens — color swatches, spacing ruler, type sample
+const drawAouiSketch = (canvas: HTMLCanvasElement) => {
+  const env = prepareCanvas(canvas, 480, 260);
+  if (!env) return;
+
+  text(env, 'design tokens', 54, 46, 23, PENCIL);
+
+  const swatches = [
+    palette.idle,
+    palette.matched,
+    palette.comparing,
+    palette.minimum,
+    palette.cached,
+  ];
+  swatches.forEach((tone, index) => {
+    rect(env, {
+      x: 56 + index * 54,
+      y: 64,
+      width: 42,
+      height: 42,
+      fill: tone.bg,
+      stroke: tone.border,
+      strokeWidth: 2.2,
+      roughness: 1.05,
+      radius: 10,
+      seed: env.seed + index,
+    });
+  });
+
+  text(env, 'space', 56, 152, 15, PENCIL);
+  line(env, 56, 168, 250, 168, env.seed + 20, INK, 2, 1);
+  [0, 26, 66, 128, 194].forEach((dx, index) => {
+    const x = 56 + dx;
+    line(env, x, 162, x, 174, env.seed + 30 + index, PENCIL, 1.8, 0.6);
+  });
+
+  text(env, 'Aa', 362, 170, 46, INK, 'center', 700);
+  text(env, 'type', 362, 196, 15, PENCIL, 'center');
+
+  text(env, 'color · space · type', 240, 236, 19, INK, 'center', 700);
+};
+
+// 04 — AOUOS LOGO: framed mark + download into a tray + format chips
+const drawLogoSketch = (canvas: HTMLCanvasElement) => {
+  const env = prepareCanvas(canvas, 480, 260);
+  if (!env) return;
+
+  rect(env, {
+    x: 52,
+    y: 54,
+    width: 150,
+    height: 140,
     fill: 'transparent',
     stroke: INK,
     strokeWidth: 2.4,
@@ -30,257 +257,224 @@ const drawLessonMap = (canvas: HTMLCanvasElement) => {
     radius: 16,
     seed: env.seed + 1,
   });
-  text(env, 'lesson path', 70, 78, 24, PENCIL);
-  ['array', 'tree', 'graph'].forEach((label, index) => {
-    const x = 76 + index * 116;
-    rect(env, {
-      x,
-      y: 112,
-      width: 86,
-      height: 44,
-      fill: index === 1 ? palette.comparing.bg : 'transparent',
-      stroke: index === 1 ? palette.comparing.border : INK,
-      strokeWidth: 2,
-      roughness: 1.1,
-      radius: 12,
-      seed: env.seed + 10 + index,
-    });
-    text(env, label, x + 43, 140, 19, INK, 'center', index === 1 ? 700 : 400);
-    if (index < 2)
-      arrow(env, x + 88, 134, x + 112, 134, env.seed + 20 + index, PENCIL);
-  });
-  line(env, 88, 184, 394, 178, env.seed + 30, TRACK, 2.4, 2.3, 4);
-  text(env, 'visual notes, not slides', 240, 224, 22, PENCIL, 'center');
-};
-
-const drawDashboardSketch = (canvas: HTMLCanvasElement) => {
-  const env = prepareCanvas(canvas, 480, 260);
-  if (!env) return;
-
-  rect(env, {
-    x: 52,
-    y: 42,
-    width: 376,
-    height: 176,
-    fill: 'transparent',
-    stroke: INK,
-    strokeWidth: 2.5,
-    roughness: 1.15,
-    radius: 14,
-    seed: env.seed + 1,
-  });
-  line(env, 52, 82, 428, 82, env.seed + 2, INK, 2.1, 1);
-  text(env, 'usage desk', 72, 69, 21, PENCIL);
-  [0, 1, 2].forEach((index) => {
-    const x = 82 + index * 92;
-    const h = [54, 84, 38][index];
-    rect(env, {
-      x,
-      y: 176 - h,
-      width: 42,
-      height: h,
-      fill: [palette.idle.bg, palette.minimum.bg, palette.matched.bg][index],
-      stroke: [
-        palette.idle.border,
-        palette.minimum.border,
-        palette.matched.border,
-      ][index],
-      strokeWidth: 2.2,
-      roughness: 1.05,
-      radius: 9,
-      seed: env.seed + 10 + index,
-    });
-  });
   ellipse(env, {
-    cx: 346,
-    cy: 140,
-    width: 88,
-    height: 88,
-    fill: palette.comparing.bg,
-    stroke: palette.comparing.border,
-    strokeWidth: 2.4,
-    roughness: 1.2,
-    seed: env.seed + 20,
-  });
-  line(env, 346, 140, 382, 116, env.seed + 21, INK, 2.4, 0.8);
-  text(env, 'budget', 346, 194, 18, PENCIL, 'center');
-};
-
-const drawTokenSystemSketch = (canvas: HTMLCanvasElement) => {
-  const env = prepareCanvas(canvas, 480, 260);
-  if (!env) return;
-
-  text(env, 'tokens', 62, 54, 25, PENCIL);
-  const colors = [
-    palette.idle,
-    palette.matched,
-    palette.comparing,
-    palette.minimum,
-  ];
-  colors.forEach((color, index) => {
-    const x = 70 + index * 78;
-    rect(env, {
-      x,
-      y: 82,
-      width: 54,
-      height: 54,
-      fill: color.bg,
-      stroke: color.border,
-      strokeWidth: 2.2,
-      roughness: 1.1,
-      radius: 11,
-      seed: env.seed + index,
-    });
-  });
-  [0, 1, 2].forEach((row) => {
-    line(
-      env,
-      72,
-      166 + row * 22,
-      386 - row * 52,
-      166 + row * 22,
-      env.seed + 20 + row,
-      PENCIL,
-      2,
-      1
-    );
-  });
-  text(env, 'same decisions everywhere', 236, 236, 20, INK, 'center');
-};
-
-const drawLogoSketch = (canvas: HTMLCanvasElement) => {
-  const env = prepareCanvas(canvas, 480, 260);
-  if (!env) return;
-
-  rect(env, {
-    x: 80,
-    y: 54,
-    width: 128,
-    height: 128,
-    fill: 'transparent',
-    stroke: INK,
-    strokeWidth: 2.4,
-    roughness: 1.2,
-    radius: 24,
-    seed: env.seed + 1,
-  });
-  ellipse(env, {
-    cx: 136,
-    cy: 104,
-    width: 38,
-    height: 38,
+    cx: 112,
+    cy: 106,
+    width: 56,
+    height: 56,
     fill: palette.idle.bg,
     stroke: palette.idle.border,
-    strokeWidth: 2.2,
+    strokeWidth: 2.4,
     seed: env.seed + 2,
   });
   ellipse(env, {
-    cx: 164,
-    cy: 144,
-    width: 48,
-    height: 48,
+    cx: 148,
+    cy: 134,
+    width: 66,
+    height: 66,
     fill: palette.minimum.bg,
     stroke: palette.minimum.border,
-    strokeWidth: 2.2,
+    strokeWidth: 2.4,
     seed: env.seed + 3,
   });
-  line(env, 250, 84, 386, 76, env.seed + 10, PENCIL, 2.2, 1.3);
-  line(env, 250, 122, 354, 118, env.seed + 11, PENCIL, 2.2, 1.3);
-  line(env, 250, 160, 404, 152, env.seed + 12, PENCIL, 2.2, 1.3);
-  text(env, 'brand kit', 248, 214, 22, INK);
+  text(env, 'logo', 127, 184, 16, PENCIL, 'center');
+
+  text(env, 'download', 252, 66, 20, INK);
+  arrow(env, 330, 84, 330, 140, env.seed + 10, INK);
+  line(env, 296, 152, 396, 152, env.seed + 11, INK, 2.6, 0.8);
+  line(env, 296, 152, 296, 142, env.seed + 12, INK, 2.6, 0.6);
+  line(env, 396, 152, 396, 142, env.seed + 13, INK, 2.6, 0.6);
+  labelChip(env, 256, 168, 'SVG', palette.comparing, env.seed + 20);
+  labelChip(env, 344, 168, 'PNG', palette.matched, env.seed + 21);
+
+  text(env, 'svg · png · multiple sizes', 240, 236, 18, PENCIL, 'center');
 };
 
+// 05 — Watermark Remover: before / after photo frames
 const drawWatermarkSketch = (canvas: HTMLCanvasElement) => {
   const env = prepareCanvas(canvas, 480, 260);
   if (!env) return;
 
+  const scene = (ox: number, withMark: boolean, seed: number) => {
+    ellipse(env, {
+      cx: ox + 34,
+      cy: 88,
+      width: 26,
+      height: 26,
+      fill: palette.comparing.bg,
+      stroke: palette.comparing.border,
+      strokeWidth: 2,
+      seed: seed + 1,
+    });
+    polygon(
+      env,
+      [
+        [ox + 12, 162],
+        [ox + 58, 100],
+        [ox + 104, 162],
+      ],
+      {
+        fill: palette.idle.bg,
+        fillStyle: 'solid',
+        stroke: palette.idle.border,
+        strokeWidth: 2,
+        seed: seed + 2,
+      }
+    );
+    polygon(
+      env,
+      [
+        [ox + 72, 162],
+        [ox + 112, 118],
+        [ox + 156, 162],
+      ],
+      {
+        fill: palette.matched.bg,
+        fillStyle: 'solid',
+        stroke: palette.matched.border,
+        strokeWidth: 2,
+        seed: seed + 3,
+      }
+    );
+    if (withMark) {
+      text(env, 'MARK', ox + 38, 138, 22, palette.error.border, 'left', 700);
+      line(
+        env,
+        ox + 20,
+        150,
+        ox + 150,
+        104,
+        seed + 4,
+        palette.error.border,
+        4,
+        1.3
+      );
+    }
+  };
+
   rect(env, {
-    x: 58,
-    y: 58,
-    width: 142,
-    height: 128,
+    x: 46,
+    y: 54,
+    width: 168,
+    height: 120,
     fill: palette.empty.bg,
     stroke: PENCIL,
     strokeWidth: 2,
-    roughness: 1.1,
-    radius: 12,
+    roughness: 1.05,
+    radius: 10,
     seed: env.seed + 1,
   });
+  scene(46, true, env.seed + 10);
+
+  arrow(env, 226, 114, 262, 114, env.seed + 5, INK);
+
   rect(env, {
-    x: 280,
-    y: 58,
-    width: 142,
-    height: 128,
+    x: 274,
+    y: 54,
+    width: 160,
+    height: 120,
     fill: 'transparent',
     stroke: INK,
     strokeWidth: 2.4,
-    roughness: 1.1,
-    radius: 12,
+    roughness: 1.05,
+    radius: 10,
     seed: env.seed + 2,
   });
-  text(env, 'mark', 96, 126, 26, palette.error.border, 'left', 700);
-  line(env, 88, 138, 174, 94, env.seed + 3, palette.error.border, 5, 1.5);
-  arrow(env, 214, 122, 270, 122, env.seed + 4, INK);
-  line(env, 306, 126, 392, 100, env.seed + 5, palette.matched.border, 2.4, 1.2);
-  text(env, 'clean', 318, 158, 22, palette.matched.border, 'left', 700);
+  scene(274, false, env.seed + 20);
+  line(env, 396, 78, 404, 88, env.seed + 30, palette.matched.border, 3.4, 0.6);
+  line(env, 404, 88, 422, 66, env.seed + 31, palette.matched.border, 3.4, 0.6);
+
+  text(env, 'watermarks → clean art', 240, 206, 19, INK, 'center', 700);
 };
 
+// 06 — React 19 Learning: React atom + phase progress
 const drawReactSketch = (canvas: HTMLCanvasElement) => {
   const env = prepareCanvas(canvas, 480, 260);
   if (!env) return;
 
-  node(env, 236, 62, 'App', palette.idle, env.seed + 1);
-  node(env, 142, 142, 'UI', palette.cached, env.seed + 2);
-  node(env, 236, 142, 'state', palette.comparing, env.seed + 3);
-  node(env, 336, 142, 'fx', palette.minimum, env.seed + 4);
-  arrow(env, 222, 82, 160, 122, env.seed + 10, PENCIL);
-  arrow(env, 236, 88, 236, 118, env.seed + 11, PENCIL);
-  arrow(env, 250, 82, 320, 122, env.seed + 12, PENCIL);
-  rect(env, {
-    x: 82,
-    y: 198,
-    width: 316,
-    height: 34,
-    fill: palette.matched.bg,
-    stroke: palette.matched.border,
-    strokeWidth: 2,
-    roughness: 1,
-    radius: 13,
-    seed: env.seed + 20,
+  const cx = 158;
+  const cy = 118;
+  [0, 60, 120].forEach((angle, index) => {
+    rotatedEllipse(env, cx, cy, 168, 60, angle, {
+      stroke: palette.idle.border,
+      strokeWidth: 2.2,
+      seed: env.seed + index,
+    });
   });
-  text(env, '30 lessons -> source reading', 240, 221, 19, INK, 'center', 700);
+  ellipse(env, {
+    cx,
+    cy,
+    width: 20,
+    height: 20,
+    fill: palette.idle.bg,
+    stroke: palette.idle.border,
+    strokeWidth: 2.4,
+    seed: env.seed + 9,
+  });
+
+  text(env, 'React 19', 268, 88, 22, INK, 'left', 700);
+  [0, 1, 2, 3].forEach((index) => {
+    const done = index < 2;
+    rect(env, {
+      x: 268 + index * 40,
+      y: 112,
+      width: 32,
+      height: 18,
+      fill: done ? palette.matched.bg : palette.empty.bg,
+      stroke: done ? palette.matched.border : PENCIL,
+      strokeWidth: 2,
+      roughness: 1,
+      radius: 6,
+      seed: env.seed + 20 + index,
+    });
+  });
+  text(env, '30 lessons', 268, 168, 18, PENCIL);
+
+  text(env, 'core → source mastery', 240, 238, 18, INK, 'center', 700);
 };
 
+// 07 — Vue 3 Learning: Vue chevron logo + phases
 const drawVueSketch = (canvas: HTMLCanvasElement) => {
   const env = prepareCanvas(canvas, 480, 260);
   if (!env) return;
 
-  ellipse(env, {
-    cx: 186,
-    cy: 126,
-    width: 136,
-    height: 92,
-    fill: 'transparent',
-    stroke: palette.matched.border,
-    strokeWidth: 2.4,
-    roughness: 1.2,
-    seed: env.seed + 1,
-  });
-  ellipse(env, {
-    cx: 242,
-    cy: 126,
-    width: 136,
-    height: 92,
-    fill: 'transparent',
-    stroke: palette.idle.border,
-    strokeWidth: 2.4,
-    roughness: 1.2,
-    seed: env.seed + 2,
-  });
-  text(env, 'ref', 160, 134, 24, palette.matched.border, 'center', 700);
-  text(env, 'view', 268, 134, 24, palette.idle.border, 'center', 700);
-  labelChip(env, 90, 196, 'todo', palette.comparing, env.seed + 10);
-  labelChip(env, 226, 196, 'shop', palette.minimum, env.seed + 11);
+  polygon(
+    env,
+    [
+      [80, 74],
+      [234, 74],
+      [157, 178],
+    ],
+    {
+      fill: palette.matched.bg,
+      fillStyle: 'solid',
+      stroke: palette.matched.border,
+      strokeWidth: 2.6,
+      seed: env.seed + 1,
+    }
+  );
+  polygon(
+    env,
+    [
+      [120, 74],
+      [194, 74],
+      [157, 128],
+    ],
+    {
+      fill: '#2f2a25',
+      fillStyle: 'solid',
+      stroke: INK,
+      strokeWidth: 2.4,
+      seed: env.seed + 2,
+    }
+  );
+
+  text(env, 'Vue 3', 270, 90, 22, palette.matched.border, 'left', 700);
+  labelChip(env, 262, 116, 'todo', palette.comparing, env.seed + 10);
+  labelChip(env, 350, 116, 'shop', palette.minimum, env.seed + 11);
+  text(env, 'composition api', 270, 174, 17, PENCIL);
+
+  text(env, '4 phases · full-stack', 240, 238, 18, INK, 'center', 700);
 };
 
 const drawGenericSketch = (canvas: HTMLCanvasElement) => {
@@ -313,9 +507,9 @@ const drawGenericSketch = (canvas: HTMLCanvasElement) => {
 };
 
 const projectSketches: Record<string, (canvas: HTMLCanvasElement) => void> = {
-  '01': drawLessonMap,
-  '02': drawDashboardSketch,
-  '03': drawTokenSystemSketch,
+  '01': drawVizLearnSketch,
+  '02': drawAouoAiSketch,
+  '03': drawAouiSketch,
   '04': drawLogoSketch,
   '05': drawWatermarkSketch,
   '06': drawReactSketch,

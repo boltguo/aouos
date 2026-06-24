@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Nav from '../../components/home/Nav.astro';
 import HomeFooter from '../../components/home/Footer.astro';
 import { getCollection } from 'astro:content';
 
@@ -21,8 +20,6 @@ const formatDate = (value: Date) =>
   description="Thoughts and notes from BoltGuo on frontend engineering and AI."
 >
   <div class="min-h-screen bg-white text-[var(--ink)]">
-    <Nav />
-
     <main class="viz-main">
       <section class="viz-hero-band">
         <div class="viz-glow" aria-hidden="true"></div>
@@ -63,14 +60,14 @@ const formatDate = (value: Date) =>
                       />
                     </div>
                     <div class="min-w-0 flex-1">
-                      <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-[rgba(74,65,56,0.62)]">
+                      <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-[rgba(74,65,56,0.82)]">
                         <span class="viz-chip">AOUOS</span>
                         <span>{formatDate(post.data.date)}</span>
                       </div>
                       <h2 class="mt-2.5 text-xl font-semibold text-[var(--ink)] transition-colors group-hover:text-[#2563eb] sm:text-2xl">
                         {post.data.title}
                       </h2>
-                      <p class="mt-2 text-base leading-relaxed text-[rgba(74,65,56,0.68)]">
+                      <p class="mt-2 text-base leading-relaxed text-[rgba(74,65,56,0.82)]">
                         {post.data.description}
                       </p>
                     </div>

@@ -5,9 +5,9 @@ const HOME_PROJECT_IDS = ['01', '05', '06'];
 const TILE_ROTATION = [1.1, -1.3, 0.9];
 const BEAT_ACCENT = ['#0891B2', '#7C3AED', '#CA8A04'];
 
-const homeProjects = HOME_PROJECT_IDS.map(
-  (id) => projects.find((p) => p.id === id)!
-);
+const homeProjects = HOME_PROJECT_IDS.map((id) =>
+  projects.find((p) => p.id === id)
+).filter((p): p is (typeof projects)[number] => Boolean(p));
 ---
 
 <section class="viz-feature-section" id="projects">
@@ -21,36 +21,43 @@ const homeProjects = HOME_PROJECT_IDS.map(
 
   <ul class="viz-feature-list">
     {
-      homeProjects.map(({ id, title, description }, index) => {
+      homeProjects.map(({ id, title, description, link }, index) => {
         const flip = index % 2 === 1;
         return (
-          <li class="viz-feature-row">
-            <div class={`viz-feature-art ${flip ? 'viz-order-2' : ''}`}>
-              <span
-                aria-hidden="true"
-                class="viz-beat-number"
-                style={`color: ${BEAT_ACCENT[index]}`}
-              >
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <div
-                class="viz-sketch-pad"
-                style={`rotate: ${TILE_ROTATION[index]}deg`}
-              >
-                <canvas
-                  class="sketch-canvas"
-                  data-sketch="project"
-                  data-project={id}
-                  width="480"
-                  height="260"
-                  aria-label={`${title} sketch`}
-                />
+          <li>
+            <a
+              class="viz-feature-row viz-feature-link"
+              href={link}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <div class={`viz-feature-art ${flip ? 'viz-order-2' : ''}`}>
+                <span
+                  aria-hidden="true"
+                  class="viz-beat-number"
+                  style={`color: ${BEAT_ACCENT[index]}`}
+                >
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div
+                  class="viz-sketch-pad"
+                  style={`rotate: ${TILE_ROTATION[index]}deg`}
+                >
+                  <canvas
+                    class="sketch-canvas"
+                    data-sketch="project"
+                    data-project={id}
+                    width="480"
+                    height="260"
+                    aria-label={`${title} sketch`}
+                  />
+                </div>
               </div>
-            </div>
-            <div>
-              <h3 class="viz-feature-title">{title}</h3>
-              <p class="viz-feature-desc">{description}</p>
-            </div>
+              <div>
+                <h3 class="viz-feature-title">{title}</h3>
+                <p class="viz-feature-desc">{description}</p>
+              </div>
+            </a>
           </li>
         );
       })

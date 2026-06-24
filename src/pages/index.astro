@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Nav from '../components/home/Nav.astro';
 import Hero from '../components/home/Hero.astro';
 import Projects from '../components/home/Projects.astro';
 import Blog from '../components/home/Blog.astro';
@@ -25,12 +24,11 @@ const blogPosts = (await getCollection('blog'))
   description="A hand-drawn personal site for Bolt Guo's frontend projects, AI experiments, and field notes."
 >
   <div class="paper-page text-[var(--ink)]">
-    <Nav />
-    <div class="viz-main">
+    <main class="viz-main">
       <Hero />
       <Projects />
       <Blog posts={blogPosts} />
       <HomeFooter />
-    </div>
+    </main>
   </div>
 </Layout>

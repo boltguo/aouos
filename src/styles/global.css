@@ -2,22 +2,6 @@
 @config '../../tailwind.config.js';
 
 @font-face {
-  font-family: 'Inter';
-  src: url('/fonts/inter-v12-latin-regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: optional;
-}
-
-@font-face {
-  font-family: 'Inter';
-  src: url('/fonts/inter-v12-latin-600.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: optional;
-}
-
-@font-face {
   font-family: 'Comic Neue';
   src: url('/fonts/comic-neue-400.woff2') format('woff2');
   font-weight: 400;
@@ -38,7 +22,7 @@
   src: url('/fonts/jetbrains-mono-v13-latin-regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: optional;
+  font-display: swap;
 }
 
 @font-face {
@@ -46,19 +30,29 @@
   src: url('/fonts/jetbrains-mono-v13-latin-500.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
-  font-display: optional;
+  font-display: swap;
 }
 
-* {
+html {
   scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(74, 65, 56, 0.28) transparent;
 }
 
 ::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+  width: 8px;
+  height: 8px;
 }
 
-::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: rgba(74, 65, 56, 0.24);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(74, 65, 56, 0.38);
+}
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
@@ -315,19 +309,44 @@ button {
   line-height: 0.98;
 }
 
-.aouos-hero-code {
+.aouos-hero-code-card {
   width: 100%;
   max-width: 680px;
   margin: 0 auto;
+}
+
+.aouos-code-file {
+  display: block;
+  margin: 0 0 0.55rem 0.4rem;
+  color: var(--pencil);
+  font-family: var(--font-canvas);
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.aouos-code-sketch {
+  position: relative;
+  isolation: isolate;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.6);
+  filter: drop-shadow(0 2px 3px rgba(74, 65, 56, 0.06));
+}
+
+.aouos-code-sketch > :not(.rough-frame-canvas) {
+  position: relative;
+  z-index: 1;
+}
+
+.aouos-hero-code {
+  margin: 0;
   overflow: auto;
-  border: 1px solid rgba(74, 65, 56, 0.14);
-  border-radius: 0.45rem;
-  background: rgba(255, 255, 255, 0.74);
-  padding: 1.15rem 1.25rem;
+  padding: 1.2rem 1.35rem;
   color: var(--ink);
   font-family: var(--font-mono);
   font-size: 0.86rem;
   line-height: 1.75;
+  background: transparent;
 }
 
 .code-dim {
@@ -348,37 +367,6 @@ button {
 
 .code-string {
   color: #c2410c;
-}
-
-.aouos-link-button {
-  display: inline-flex;
-  min-height: 2.75rem;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(74, 65, 56, 0.22);
-  border-radius: 0.5rem;
-  background: rgba(255, 255, 255, 0.76);
-  padding: 0.68rem 1rem;
-  color: var(--ink);
-  font-size: 0.9rem;
-  font-weight: 700;
-  text-decoration: none;
-  transition:
-    background-color 180ms ease,
-    border-color 180ms ease,
-    color 180ms ease,
-    transform 180ms ease;
-}
-
-.aouos-link-button:hover {
-  border-color: rgba(30, 136, 229, 0.34);
-  background: rgba(227, 242, 253, 0.72);
-  color: #2563eb;
-  transform: translateY(-1px);
-}
-
-.aouos-link-button.secondary {
-  color: rgba(74, 65, 56, 0.7);
 }
 
 .aouos-text-link {
@@ -448,7 +436,7 @@ button {
   position: relative;
   margin-inline: auto;
   max-width: 80rem;
-  padding: 1rem 1.5rem 4rem;
+  padding: clamp(3rem, 7vh, 5.5rem) 1.5rem 4rem;
 }
 
 .viz-feature-list {
@@ -461,6 +449,32 @@ button {
   display: grid;
   align-items: center;
   gap: 1.5rem;
+}
+
+.viz-feature-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.viz-feature-link .viz-feature-title,
+.viz-feature-link .viz-sketch-pad {
+  transition:
+    color 200ms ease,
+    transform 240ms ease;
+}
+
+.viz-feature-link:hover .viz-feature-title {
+  color: #2563eb;
+}
+
+.viz-feature-link:hover .viz-sketch-pad {
+  transform: translateY(-4px);
+}
+
+.viz-feature-link:focus-visible {
+  border-radius: 0.6rem;
+  outline: 2px solid rgba(37, 99, 235, 0.5);
+  outline-offset: 6px;
 }
 
 .viz-feature-art {
@@ -499,7 +513,7 @@ button {
 
 .viz-feature-desc {
   margin-top: 0.75rem;
-  color: rgba(74, 65, 56, 0.7);
+  color: rgba(74, 65, 56, 0.82);
   font-size: 1rem;
   line-height: 1.625;
 }
@@ -522,14 +536,14 @@ button {
 }
 
 .viz-kicker {
-  color: rgba(74, 65, 56, 0.62);
+  color: rgba(74, 65, 56, 0.82);
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
 }
 
 .viz-muted {
-  color: rgba(74, 65, 56, 0.68);
+  color: rgba(74, 65, 56, 0.82);
 }
 
 .viz-blog-card {
@@ -574,6 +588,11 @@ button {
 
   .viz-order-2 {
     order: 2;
+  }
+
+  .viz-order-2 .viz-beat-number {
+    right: 0;
+    left: auto;
   }
 }
 
@@ -687,7 +706,7 @@ button {
 
 .viz-article-back {
   display: inline-flex;
-  color: rgba(74, 65, 56, 0.72);
+  color: rgba(74, 65, 56, 0.82);
   font-size: 0.9rem;
   font-weight: 500;
   text-decoration: none;
@@ -706,7 +725,7 @@ button {
 }
 
 .viz-article-category {
-  color: rgba(74, 65, 56, 0.62);
+  color: rgba(74, 65, 56, 0.82);
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -718,7 +737,7 @@ button {
   align-items: center;
   gap: 0.65rem;
   margin-top: 1rem;
-  color: rgba(74, 65, 56, 0.62);
+  color: rgba(74, 65, 56, 0.82);
   font-size: 0.875rem;
 }
 
@@ -733,7 +752,7 @@ button {
 .viz-article-description {
   max-width: 42rem;
   margin-top: 1.25rem;
-  color: rgba(74, 65, 56, 0.68);
+  color: rgba(74, 65, 56, 0.82);
   font-size: 1rem;
   line-height: 1.75;
 }
@@ -742,14 +761,6 @@ button {
   max-width: 48rem;
   margin-inline: auto;
   padding: 3rem 1.5rem 4rem;
-}
-
-.viz-article-cover {
-  margin-bottom: 3rem;
-  overflow: hidden;
-  border: 1px solid rgba(74, 65, 56, 0.14);
-  border-radius: 0.75rem;
-  background: #fff;
 }
 
 .viz-article-body {
@@ -836,7 +847,7 @@ button {
 .viz-article-body blockquote {
   border-left: 2px solid rgba(74, 65, 56, 0.18);
   padding-left: 1rem;
-  color: rgba(74, 65, 56, 0.66);
+  color: rgba(74, 65, 56, 0.82);
   font-style: normal;
 }
 
@@ -895,7 +906,7 @@ button {
 }
 
 .viz-series-link span {
-  color: rgba(74, 65, 56, 0.58);
+  color: rgba(74, 65, 56, 0.8);
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;

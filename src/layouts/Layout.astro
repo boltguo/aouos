@@ -1,7 +1,17 @@
 ---
 import '../styles/global.css';
+import Nav from '../components/home/Nav.astro';
 
-const { title, description } = Astro.props;
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description = '', image = '/logo.svg' } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
+const ogImage = new URL(image, Astro.site ?? Astro.url);
 ---
 
 <!doctype html>
@@ -11,7 +21,20 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AOUOS" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImage} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <link
       rel="preload"
       href="/fonts/comic-neue-400.woff2"
@@ -35,9 +58,8 @@ const { title, description } = Astro.props;
     />
   </head>
   <body>
-    <main>
-      <slot />
-    </main>
+    <Nav />
+    <slot />
     <script>
       import '../scripts/handdrawn';
     </script>

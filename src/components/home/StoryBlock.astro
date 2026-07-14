@@ -1,0 +1,43 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  /** Which roughjs sketch to render */
+  sketch: string;
+  /** Put the art on the left instead of the right */
+  flip?: boolean;
+  accent?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  sketch,
+  flip = false,
+  accent = 'var(--canvas-blue)',
+} = Astro.props;
+---
+
+<section class="story-block">
+  <div class={`story-block__row ${flip ? 'is-flip' : ''}`}>
+    <div class="story-block__copy">
+      <p class="story-eyebrow" style={`color:${accent}`}>{eyebrow}</p>
+      <h3 class="story-title">{title}</h3>
+      <div class="story-body">
+        <slot />
+      </div>
+    </div>
+
+    <div class="story-block__art">
+      <div class="viz-sketch-pad">
+        <canvas
+          class="sketch-canvas"
+          data-sketch="project"
+          data-project={sketch}
+          width="480"
+          height="260"
+          aria-hidden="true"></canvas>
+      </div>
+    </div>
+  </div>
+</section>

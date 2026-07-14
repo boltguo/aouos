@@ -1,0 +1,26 @@
+---
+interface Props {
+  /** Band paint color */
+  color: string;
+  /** Giant hand-drawn chapter word */
+  title: string;
+  /** Ink color for the outline of the title (defaults to dark ink) */
+  outline?: string;
+  /** Extra id/anchor */
+  id?: string;
+}
+
+const { color, title, outline = 'var(--ink)', id } = Astro.props;
+---
+
+<section
+  class="brush-band"
+  id={id}
+  style={`--band:${color};--band-ink:${outline}`}
+>
+  <span class="brush-band__paint" aria-hidden="true"></span>
+  <div class="brush-band__inner">
+    <h2 class="chapter-title">{title}</h2>
+    <slot />
+  </div>
+</section>

@@ -1,33 +1,225 @@
+---
+import Icon from '../Icon.astro';
+---
+
 <section class="aouos-hero">
-  <div class="aouos-hero-copy">
-    <p class="viz-kicker">AOUOS / Bolt Guo</p>
-    <h1 class="aouos-hero-title">Hello, I'm Bolt Guo.</h1>
-    <p class="viz-muted mt-5 max-w-2xl text-base leading-relaxed md:text-lg">
-      Frontend developer working on AI tools, product interfaces, and practical
-      web projects. AOUOS collects the projects, notes, and experiments I
-      actually ship.
-    </p>
+  {/* corner doodles */}
+  <svg
+    class="hero-doodle hero-doodle--spark"
+    width="30"
+    height="30"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <g
+      fill="none"
+      stroke="var(--canvas-amber)"
+      stroke-width="2.6"
+      stroke-linecap="round"
+      filter="url(#rough-ink)"
+    >
+      <path d="M12 2v20"></path>
+      <path d="M3 7l18 10"></path>
+      <path d="M21 7L3 17"></path>
+    </g>
+  </svg>
+  <svg
+    class="hero-doodle hero-doodle--spark2"
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <g
+      fill="none"
+      stroke="var(--canvas-red)"
+      stroke-width="2.6"
+      stroke-linecap="round"
+      filter="url(#rough-ink)"
+    >
+      <path d="M12 2v20"></path>
+      <path d="M3 7l18 10"></path>
+      <path d="M21 7L3 17"></path>
+    </g>
+  </svg>
+  <svg
+    class="hero-doodle hero-doodle--spark3"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <g
+      fill="none"
+      stroke="var(--canvas-blue)"
+      stroke-width="2.8"
+      stroke-linecap="round"
+      filter="url(#rough-ink)"
+    >
+      <path d="M12 2v20"></path>
+      <path d="M3 7l18 10"></path>
+      <path d="M21 7L3 17"></path>
+    </g>
+  </svg>
+  <svg
+    class="hero-doodle hero-doodle--circle"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <path
+      d="M12 3 C 18 3, 21 8, 20 13 C 19 19, 12 22, 8 19 C 3 16, 3 8, 8 5 C 10 3.6, 12 3, 13 4"
+      fill="none"
+      stroke="var(--canvas-blue)"
+      stroke-width="2.4"
+      stroke-linecap="round"
+      filter="url(#rough-ink)"></path>
+  </svg>
+  <svg
+    class="hero-doodle hero-doodle--plus"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <g
+      fill="none"
+      stroke="var(--canvas-lilac)"
+      stroke-width="2.6"
+      stroke-linecap="round"
+      filter="url(#rough-ink)"
+    >
+      <path d="M12 4v16"></path>
+      <path d="M4 12h16"></path>
+    </g>
+  </svg>
+  <svg
+    class="hero-doodle hero-doodle--squiggle"
+    width="36"
+    height="14"
+    viewBox="0 0 36 14"
+    aria-hidden="true"
+  >
+    <path
+      d="M2 10 C 7 2, 12 12, 17 6 S 28 10, 34 4"
+      fill="none"
+      stroke="var(--canvas-green)"
+      stroke-width="2.4"
+      stroke-linecap="round"
+      filter="url(#rough-ink)"></path>
+  </svg>
+  <svg
+    class="hero-doodle hero-doodle--triangle"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <path
+      d="M12 4 L21 19 L3 19 Z"
+      fill="none"
+      stroke="var(--canvas-amber)"
+      stroke-width="2.4"
+      stroke-linejoin="round"
+      filter="url(#rough-ink)"></path>
+  </svg>
+  <svg
+    class="hero-doodle hero-doodle--loop"
+    width="26"
+    height="24"
+    viewBox="0 0 26 24"
+    aria-hidden="true"
+  >
+    <path
+      d="M4 19 C 4 9, 18 7, 20 13 C 21.5 18, 14 21, 12 16 C 10.5 11.5, 16 9, 23 5"
+      fill="none"
+      stroke="var(--canvas-red)"
+      stroke-width="2.4"
+      stroke-linecap="round"
+      filter="url(#rough-ink)"></path>
+  </svg>
+
+  <div class="hero-motion-top">
+    <canvas
+      class="sketch-canvas"
+      data-hero-motion="top"
+      width="760"
+      height="190"
+      role="img"
+      aria-label="Hand-drawn doodles of music notes and a retro TV playing an anime face"
+    ></canvas>
   </div>
 
-  <div class="aouos-hero-code-card">
-    <span class="aouos-code-file">developer.ts</span>
-    <div class="aouos-code-sketch">
-      <canvas class="rough-frame-canvas" data-rough-frame aria-hidden="true"
-      ></canvas>
-      <pre
-        class="aouos-hero-code"
-        aria-label="Bolt Guo profile code block"><code><span class="code-dim">01</span> <span class="code-purple">interface</span> <span class="code-green">Developer</span> &#123;
-<span class="code-dim">02</span>   <span class="code-blue">name</span>: <span class="code-green">string</span>;
-<span class="code-dim">03</span>   <span class="code-blue">focus</span>: <span class="code-green">string</span>[];
-<span class="code-dim">04</span>   <span class="code-blue">ships</span>: <span class="code-green">string</span>;
-<span class="code-dim">05</span> &#125;
-<span class="code-dim">06</span>
-<span class="code-dim">07</span> <span class="code-purple">const</span> <span class="code-blue">me</span>: <span class="code-green">Developer</span> = &#123;
-<span class="code-dim">08</span>   <span class="code-blue">name</span>: <span class="code-string">'Bolt Guo'</span>,
-<span class="code-dim">09</span>   <span class="code-blue">focus</span>: [<span class="code-string">'frontend'</span>, <span class="code-string">'AI'</span>, <span class="code-string">'tools'</span>],
-<span class="code-dim">10</span>   <span class="code-blue">ships</span>: <span class="code-string">'projects, notes, tools'</span>
-<span class="code-dim">11</span> &#125;;
-<span class="code-dim">12</span> <span class="code-purple">export</span> <span class="code-purple">default</span> <span class="code-blue">me</span>;</code></pre>
+  <div class="aouos-hero-copy">
+    <p class="viz-kicker">AOUOS / BOLT GUO</p>
+    <h1 class="aouos-hero-title">
+      <span class="hero-hello">Hello, I'm</span><span class="hero-name"
+        >Bolt Guo.<svg
+          class="hero-name-swash"
+          viewBox="0 0 220 24"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M6 14 C 42 5, 80 20, 116 11 S 186 9, 214 14"
+            fill="none"
+            stroke="var(--canvas-blue)"
+            stroke-width="7"
+            stroke-linecap="round"
+            filter="url(#rough-ink)"></path>
+        </svg>
+      </span>
+    </h1>
+    <p class="viz-muted hero-intro">
+      Frontend developer building AI tools, product interfaces, and practical
+      web projects. Off the keyboard it's mostly games, anime, and a very long
+      playlist.
+    </p>
+
+    <div class="hero-tags">
+      <span class="project-tag">Frontend</span>
+      <span class="project-tag">AI tools</span>
+      <span class="project-tag">Ships for real</span>
+    </div>
+
+    <div class="hero-cta">
+      <a class="band-btn band-btn--primary" href="#projects">
+        View projects
+        <Icon name="arrow-down" size={17} />
+      </a>
+      <a class="band-btn" href="#story">Read the story</a>
     </div>
   </div>
+
+  <div class="hero-sketch-pad">
+    <canvas
+      class="sketch-canvas"
+      data-hero-motion="bottom"
+      width="520"
+      height="230"
+      role="img"
+      aria-label="Hand-drawn doodles of a game controller and a little ghost"
+    ></canvas>
+  </div>
+
+  <a class="hero-scroll-cue" href="#story" aria-label="Scroll to the story">
+    <span>scroll</span>
+    <svg width="16" height="30" viewBox="0 0 16 30" aria-hidden="true">
+      <g
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M8 2 C 5 7, 11 11, 8 16 L 8 22"></path>
+        <path d="M3 21 L 8 28 L 13 21"></path>
+      </g>
+    </svg>
+  </a>
 </section>
+
+<script>
+  import '../../scripts/hero-motion';
+</script>

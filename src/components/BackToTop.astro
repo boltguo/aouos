@@ -1,0 +1,31 @@
+---
+import Icon from './Icon.astro';
+---
+
+<button class="back-to-top" data-back-to-top aria-label="Back to top">
+  <Icon name="arrow-up" size={30} />
+</button>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-back-to-top]');
+  if (btn) {
+    const toggle = () => {
+      btn.classList.toggle(
+        'is-visible',
+        window.scrollY > window.innerHeight * 0.8
+      );
+    };
+    window.addEventListener('scroll', toggle, { passive: true });
+    toggle();
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (window.location.hash) {
+        history.replaceState(
+          null,
+          '',
+          window.location.pathname + window.location.search
+        );
+      }
+    });
+  }
+</script>

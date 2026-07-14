@@ -1,47 +1,60 @@
 ---
+import Icon from '../Icon.astro';
 import { projects } from '../../data/projects';
 
-const HOME_PROJECT_IDS = ['01', '05', '06'];
-const TILE_ROTATION = [1.1, -1.3, 0.9];
-const BEAT_ACCENT = ['#0891B2', '#7C3AED', '#CA8A04'];
+const featured = projects.filter((p) => p.featured);
+const rest = projects.filter((p) => !p.featured && !p.footerOnly);
 
-const homeProjects = HOME_PROJECT_IDS.map((id) =>
-  projects.find((p) => p.id === id)
-).filter((p): p is (typeof projects)[number] => Boolean(p));
+const TILE_ROTATION = [1.1, -1.3];
+const FEATURED_ACCENT = ['#0891B2', '#7C3AED'];
+const MINI_ACCENT = ['#CA8A04', '#DB2777', '#059669', '#DC2626', '#2563EB'];
 ---
 
-<section class="viz-feature-section" id="projects">
-  <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
-    <div class="max-w-2xl">
-      <p class="viz-kicker">Selected projects</p>
-      <h2 class="viz-feature-heading">Three current threads.</h2>
-    </div>
-    <a class="aouos-text-link" href="/projects">View all projects →</a>
+<section class="viz-feature-section">
+  <div class="mb-14 max-w-2xl">
+    <p class="viz-kicker">Projects</p>
+    <h2 class="viz-feature-heading">Start with these two.</h2>
   </div>
 
-  <ul class="viz-feature-list">
+  <ul class="project-cards">
     {
-      homeProjects.map(({ id, title, description, link }, index) => {
+      featured.map(({ id, title, description, tech, link, proof }, index) => {
         const flip = index % 2 === 1;
+        const accent = FEATURED_ACCENT[index % FEATURED_ACCENT.length];
         return (
-          <li>
-            <a
-              class="viz-feature-row viz-feature-link"
-              href={link}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <div class={`viz-feature-art ${flip ? 'viz-order-2' : ''}`}>
+          <li class="project-card" style={`--card-accent:${accent}`}>
+            <div class={`project-card__row ${flip ? 'is-flip' : ''}`}>
+              <div class="project-card__info">
+                <div class="project-card__tags">
+                  {tech.map((t) => (
+                    <span class="project-tag">{t}</span>
+                  ))}
+                </div>
+                <h3 class="project-card__title">{title}</h3>
+                <p class="project-card__desc">{description}</p>
+                {proof && <p class="project-card__proof">{proof}</p>}
+                <a
+                  class="band-btn project-card__cta"
+                  href={link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Visit {title}
+                  <Icon name="arrow-up-right" size={18} />
+                </a>
+              </div>
+
+              <div class="viz-feature-art">
                 <span
                   aria-hidden="true"
                   class="viz-beat-number"
-                  style={`color: ${BEAT_ACCENT[index]}`}
+                  style={`color: ${accent}`}
                 >
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <div
                   class="viz-sketch-pad"
-                  style={`rotate: ${TILE_ROTATION[index]}deg`}
+                  style={`rotate: ${TILE_ROTATION[index % TILE_ROTATION.length]}deg`}
                 >
                   <canvas
                     class="sketch-canvas"
@@ -49,18 +62,46 @@ const homeProjects = HOME_PROJECT_IDS.map((id) =>
                     data-project={id}
                     width="480"
                     height="260"
-                    aria-label={`${title} sketch`}
+                    aria-hidden="true"
                   />
                 </div>
               </div>
-              <div>
-                <h3 class="viz-feature-title">{title}</h3>
-                <p class="viz-feature-desc">{description}</p>
-              </div>
-            </a>
+            </div>
           </li>
         );
       })
     }
   </ul>
+
+  <div class="project-more">
+    <h3 class="project-more__heading">…and the rest of the shelf.</h3>
+    <ul class="project-mini-grid">
+      {
+        rest.map(({ title, description, tech, link }, index) => {
+          const accent = MINI_ACCENT[index % MINI_ACCENT.length];
+          return (
+            <li class="project-mini" style={`--card-accent:${accent}`}>
+              <a
+                class="project-mini__link"
+                href={link}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span class="project-mini__title">
+                  {title}
+                  <Icon name="arrow-up-right" size={17} />
+                </span>
+                <span class="project-mini__desc">{description}</span>
+                <span class="project-mini__tags">
+                  {tech.map((t) => (
+                    <span class="project-tag">{t}</span>
+                  ))}
+                </span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
 </section>

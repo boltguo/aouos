@@ -6,23 +6,13 @@ const BLUE = '#1e88e5';
 const GREEN = '#43a047';
 const RED = '#e88d8d';
 const AMBER = '#ffb74d';
-const LILAC = '#8e24aa';
+const PASTEL_GREEN = '#bff1c8';
+const PASTEL_RED = '#ffc2bd';
+const PASTEL_LILAC = '#d2cdff';
 
 // redraw ~11fps so the wobble reads as a hand-drawn "boil", not smooth motion
 const FRAME_MS = 88;
 const BOIL_MS = 240;
-
-const roundRect = (
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number
-): string =>
-  `M ${x + r} ${y} L ${x + w - r} ${y} Q ${x + w} ${y} ${x + w} ${y + r} ` +
-  `L ${x + w} ${y + h - r} Q ${x + w} ${y + h} ${x + w - r} ${y + h} ` +
-  `L ${x + r} ${y + h} Q ${x} ${y + h} ${x} ${y + h - r} ` +
-  `L ${x} ${y + r} Q ${x} ${y} ${x + r} ${y} Z`;
 
 type Scene = {
   rc: RoughCanvas;
@@ -35,67 +25,98 @@ const controller = (
   { rc, ctx, seed }: Scene,
   t: number,
   cx = 250,
-  cy = 216
+  cy = 216,
+  scale = 1
 ) => {
   const sway = Math.sin(t / 1400) * 0.05;
   const bob = Math.sin(t / 1400 + 1.2) * 4;
 
   ctx.save();
-  ctx.translate(cx - 250, cy - 216);
-  ctx.translate(250, 216 + bob);
+  ctx.translate(cx, cy + bob);
   ctx.rotate(sway);
+  ctx.scale(scale, scale);
   ctx.translate(-250, -216);
 
-  rc.path(roundRect(150, 170, 200, 92, 38), {
+  rc.path(
+    'M 184 166 Q 166 166 160 185 L 150 236 Q 145 256 158 267 ' +
+      'Q 171 278 183 260 L 198 238 Q 204 230 216 230 L 284 230 ' +
+      'Q 296 230 302 238 L 317 260 Q 329 278 342 267 Q 355 256 350 236 ' +
+      'L 340 185 Q 334 166 316 166 Z',
+    {
+      stroke: INK,
+      strokeWidth: 2.8,
+      fill: '#ffffff',
+      fillStyle: 'solid',
+      roughness: 1.3,
+      seed,
+    }
+  );
+  // shoulder seams
+  rc.line(184, 173, 201, 184, {
     stroke: INK,
-    strokeWidth: 2.6,
-    fill: '#ffffff',
-    fillStyle: 'solid',
-    roughness: 1.3,
-    seed,
-  });
-  // d-pad
-  rc.line(194, 216, 226, 216, {
-    stroke: INK,
-    strokeWidth: 5,
+    strokeWidth: 2,
     roughness: 1,
     seed: seed + 1,
   });
-  rc.line(210, 200, 210, 232, {
+  rc.line(316, 173, 299, 184, {
     stroke: INK,
-    strokeWidth: 5,
+    strokeWidth: 2,
     roughness: 1,
     seed: seed + 2,
   });
-  // face buttons
-  rc.circle(298, 204, 21, {
-    stroke: BLUE,
-    strokeWidth: 2.2,
-    fill: '#E3F2FD',
-    fillStyle: 'solid',
+  // d-pad
+  rc.line(192, 202, 224, 202, {
+    stroke: INK,
+    strokeWidth: 5,
     roughness: 1,
     seed: seed + 3,
   });
-  rc.circle(322, 228, 21, {
-    stroke: RED,
-    strokeWidth: 2.2,
-    fill: '#FFDDDD',
-    fillStyle: 'solid',
+  rc.line(208, 186, 208, 218, {
+    stroke: INK,
+    strokeWidth: 5,
     roughness: 1,
     seed: seed + 4,
   });
-  // start / select
-  rc.line(248, 206, 260, 206, {
-    stroke: INK,
-    strokeWidth: 2.6,
-    roughness: 1,
-    seed: seed + 5,
+  // four face buttons
+  [
+    [312, 191, BLUE, '#E3F2FD'],
+    [326, 205, RED, '#FFDDDD'],
+    [312, 219, GREEN, '#E4F5E5'],
+    [298, 205, AMBER, '#FFF1D7'],
+  ].forEach(([x, y, color, fill], i) => {
+    rc.circle(x as number, y as number, 11, {
+      stroke: color as string,
+      strokeWidth: 2.1,
+      fill: fill as string,
+      fillStyle: 'solid',
+      roughness: 1,
+      seed: seed + 5 + i,
+    });
   });
-  rc.line(248, 216, 260, 216, {
+  // thumb sticks and a small home button
+  rc.circle(241, 207, 16, {
     stroke: INK,
-    strokeWidth: 2.6,
+    strokeWidth: 2.2,
+    fill: '#f4f1ed',
+    fillStyle: 'solid',
     roughness: 1,
-    seed: seed + 6,
+    seed: seed + 9,
+  });
+  rc.circle(276, 207, 16, {
+    stroke: INK,
+    strokeWidth: 2.2,
+    fill: '#f4f1ed',
+    fillStyle: 'solid',
+    roughness: 1,
+    seed: seed + 10,
+  });
+  rc.circle(258, 190, 7, {
+    stroke: INK,
+    strokeWidth: 1.8,
+    fill: '#ffffff',
+    fillStyle: 'solid',
+    roughness: 0.8,
+    seed: seed + 11,
   });
 
   ctx.restore();
@@ -151,196 +172,74 @@ const equalizer = ({ rc, seed }: Scene, t: number, baseX = 86, baseY = 318) => {
   });
 };
 
-const animeTv = ({ rc, ctx, seed }: Scene, t: number, cx = 416, cy = 108) => {
-  const tilt = Math.sin(t / 1700 + 0.6) * 0.04;
-
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.rotate(tilt);
-  ctx.translate(-cx, -cy);
-
-  // antennas
-  rc.line(cx - 8, cy - 44, cx - 28, cy - 72, {
-    stroke: INK,
-    strokeWidth: 2.4,
-    roughness: 1.2,
-    seed: seed + 1,
-  });
-  rc.line(cx + 8, cy - 44, cx + 26, cy - 74, {
-    stroke: INK,
-    strokeWidth: 2.4,
-    roughness: 1.2,
-    seed: seed + 2,
-  });
-  // body + screen
-  rc.path(roundRect(cx - 62, cy - 44, 124, 92, 14), {
-    stroke: INK,
-    strokeWidth: 2.6,
-    fill: '#ffffff',
-    fillStyle: 'solid',
-    roughness: 1.3,
-    seed,
-  });
-  rc.path(roundRect(cx - 48, cy - 30, 76, 64, 9), {
-    stroke: LILAC,
-    strokeWidth: 2.2,
-    fill: '#F3E5F5',
-    fillStyle: 'solid',
-    roughness: 1.1,
-    seed: seed + 3,
-  });
-  // knobs
-  rc.circle(cx + 44, cy - 12, 11, {
-    stroke: INK,
-    strokeWidth: 2,
-    roughness: 1,
-    seed: seed + 4,
-  });
-  rc.circle(cx + 44, cy + 10, 11, {
-    stroke: INK,
-    strokeWidth: 2,
-    roughness: 1,
-    seed: seed + 5,
-  });
-  // an anime face on the screen: big sparkly eyes that blink, blush, tiny smile
-  // blink lands late in the cycle so the reduced-motion still frame (t=0) has open eyes
-  const blink = t % 3400 > 3220;
-  [cx - 25, cx + 5].forEach((ex, i) => {
-    if (blink) {
-      rc.line(ex - 7, cy - 4, ex + 7, cy - 4, {
-        stroke: INK,
-        strokeWidth: 2.6,
-        roughness: 0.9,
-        seed: seed + 6 + i,
-      });
-    } else {
-      rc.circle(ex, cy - 4, 15, {
-        stroke: INK,
-        strokeWidth: 2,
-        fill: INK,
-        fillStyle: 'solid',
-        roughness: 0.9,
-        seed: seed + 6 + i,
-      });
-      rc.circle(ex - 3, cy - 8, 5, {
-        stroke: '#ffffff',
-        strokeWidth: 1.4,
-        fill: '#ffffff',
-        fillStyle: 'solid',
-        roughness: 0.6,
-        seed: seed + 8 + i,
-      });
-    }
-  });
-  rc.ellipse(cx - 33, cy + 9, 10, 5, {
-    stroke: RED,
-    strokeWidth: 1.5,
-    fill: '#FFD3D3',
-    fillStyle: 'solid',
-    roughness: 0.8,
-    seed: seed + 10,
-  });
-  rc.ellipse(cx + 13, cy + 9, 10, 5, {
-    stroke: RED,
-    strokeWidth: 1.5,
-    fill: '#FFD3D3',
-    fillStyle: 'solid',
-    roughness: 0.8,
-    seed: seed + 11,
-  });
-  rc.path(
-    `M ${cx - 15} ${cy + 15} Q ${cx - 10} ${cy + 21} ${cx - 5} ${cy + 15}`,
-    {
-      stroke: INK,
-      strokeWidth: 2,
-      roughness: 0.9,
-      seed: seed + 12,
-    }
-  );
-  // twinkling sparkle in the screen corner
-  const tw = 0.6 + (Math.sin(t / 600 + 1.1) * 0.5 + 0.5) * 0.5;
-  ctx.translate(cx + 18, cy - 20);
-  ctx.scale(tw, tw);
-  rc.line(0, -6, 0, 6, {
-    stroke: LILAC,
-    strokeWidth: 2,
-    roughness: 1,
-    seed: seed + 13,
-  });
-  rc.line(-6, 0, 6, 0, {
-    stroke: LILAC,
-    strokeWidth: 2,
-    roughness: 1,
-    seed: seed + 14,
-  });
-
-  ctx.restore();
-};
-
-const ghost = ({ rc, ctx, seed }: Scene, t: number, bx = 448, by = 262) => {
-  const x = bx + Math.sin(t / 900 + 0.4) * 6;
-  const y = by + Math.sin(t / 1300 + 2.1) * 5;
-
-  ctx.save();
-  ctx.translate(x, y);
-
-  rc.path(
-    'M -20 14 L -20 -4 Q -20 -26 0 -26 Q 20 -26 20 -4 L 20 14 ' +
-      'L 12 7 L 4 14 L -4 7 L -12 14 Z',
-    {
-      stroke: INK,
-      strokeWidth: 2.4,
-      fill: '#E3F2FD',
-      fillStyle: 'solid',
-      roughness: 1.2,
-      seed,
-    }
-  );
-  rc.circle(-7, -8, 5, {
-    stroke: INK,
-    strokeWidth: 2,
-    fill: INK,
-    fillStyle: 'solid',
-    roughness: 0.8,
-    seed: seed + 1,
-  });
-  rc.circle(6, -8, 5, {
-    stroke: INK,
-    strokeWidth: 2,
-    fill: INK,
-    fillStyle: 'solid',
-    roughness: 0.8,
-    seed: seed + 2,
-  });
-
-  ctx.restore();
-};
-
-const spark = (
+const floatingRing = (
   { rc, ctx, seed }: Scene,
   t: number,
   x: number,
   y: number,
   size: number,
   color: string,
-  phase: number
+  phase: number,
+  filled = false
 ) => {
-  const s = 0.7 + (Math.sin(t / 700 + phase) * 0.5 + 0.5) * 0.55;
+  const s = 0.86 + Math.sin(t / 900 + phase) * 0.08;
+  const bob = Math.sin(t / 1300 + phase) * 2.5;
 
   ctx.save();
-  ctx.translate(x, y);
+  ctx.translate(x, y + bob);
   ctx.scale(s, s);
 
-  const opts = { stroke: color, strokeWidth: 2.4, roughness: 1.1 };
-  rc.line(0, -size, 0, size, { ...opts, seed });
-  rc.line(-size * 0.85, -size * 0.45, size * 0.85, size * 0.45, {
-    ...opts,
-    seed: seed + 1,
-  });
-  rc.line(size * 0.85, -size * 0.45, -size * 0.85, size * 0.45, {
-    ...opts,
-    seed: seed + 2,
-  });
+  const options = {
+    stroke: color,
+    strokeWidth: 2.2,
+    roughness: 1.15,
+    seed,
+  };
+
+  if (filled) {
+    rc.circle(0, 0, size * 2, {
+      ...options,
+      fill: color,
+      fillStyle: 'solid',
+    });
+  } else {
+    rc.circle(0, 0, size * 2, options);
+  }
+
+  ctx.restore();
+};
+
+const floatingCurve = (
+  { rc, ctx, seed }: Scene,
+  t: number,
+  x: number,
+  y: number,
+  size: number,
+  color: string,
+  phase: number,
+  doubled = false
+) => {
+  const bob = Math.sin(t / 1250 + phase) * 2.5;
+  const tilt = Math.sin(t / 1700 + phase) * 0.08;
+
+  ctx.save();
+  ctx.translate(x, y + bob);
+  ctx.rotate(tilt);
+
+  const options = {
+    stroke: color,
+    strokeWidth: 2.3,
+    roughness: 1.15,
+    seed,
+  };
+  rc.path(`M ${-size} 0 Q 0 ${size * 0.58} ${size} 1`, options);
+  if (doubled) {
+    rc.path(`M ${-size + 1} 3 Q 0 ${size * 0.72} ${size - 1} 4`, {
+      ...options,
+      strokeWidth: 1.7,
+      seed: seed + 1,
+    });
+  }
 
   ctx.restore();
 };
@@ -351,27 +250,37 @@ type SceneDef = {
   draw: (scene: Scene, t: number) => void;
 };
 
-// music + anime float above the hero copy...
+// Music floats opposite the SVG character portraits above the hero copy.
 const drawTop = (scene: Scene, t: number) => {
   equalizer(scene, t, 70, 172);
   musicNote(scene, t, 148, 106, 20, BLUE, 0);
   musicNote(scene, t, 202, 62, 14, AMBER, 1.8);
-  animeTv(scene, t, 650, 112);
-  spark(scene, t, 372, 74, 8, GREEN, 1.4);
-  spark(scene, t, 458, 140, 7, RED, 0.3);
+  floatingRing(scene, t, 372, 74, 5, PASTEL_GREEN, 1.4, true);
+  floatingCurve(scene, t, 458, 140, 13, PASTEL_RED, 0.3);
 };
 
-// ...the games live below it
+// Anya sits at left; the controller cable reaches back toward the center.
 const drawBottom = (scene: Scene, t: number) => {
-  controller(scene, t, 155, 130);
-  ghost(scene, t, 462, 118);
-  spark(scene, t, 46, 60, 9, RED, 0.3);
-  spark(scene, t, 320, 170, 7, LILAC, 2.6);
+  const cableWave = Math.sin(t / 1500) * 3;
+  scene.rc.path(
+    `M 654 ${88 + cableWave} C 644 ${132 + cableWave}, 612 ${174 - cableWave}, 570 181 ` +
+      `C 526 189, 493 ${145 + cableWave}, 446 145 ` +
+      `C 398 145, 358 ${195 - cableWave}, 294 218`,
+    {
+      stroke: INK,
+      strokeWidth: 2.4,
+      roughness: 1.2,
+      seed: scene.seed + 15,
+    }
+  );
+  controller(scene, t, 670, 86, 0.76);
+  floatingRing(scene, t, 272, 186, 5, PASTEL_RED, 0.3);
+  floatingCurve(scene, t, 452, 166, 14, PASTEL_LILAC, 2.6, true);
 };
 
 const SCENES: Record<string, SceneDef> = {
   top: { width: 760, height: 190, draw: drawTop },
-  bottom: { width: 520, height: 230, draw: drawBottom },
+  bottom: { width: 760, height: 230, draw: drawBottom },
 };
 
 const fitCanvas = (

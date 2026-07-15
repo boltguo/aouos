@@ -174,20 +174,86 @@ button {
 }
 
 .hero-motion-top {
+  position: relative;
   width: min(100%, 46em);
   margin-inline: auto;
   rotate: -0.5deg;
 }
 
+.hero-miku {
+  position: absolute;
+  top: -9%;
+  right: 1%;
+  width: 25%;
+  pointer-events: none;
+}
+
+.hero-character-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 76%,
+    rgba(0, 0, 0, 0.9) 82%,
+    rgba(0, 0, 0, 0.45) 90%,
+    transparent 98%
+  );
+  user-select: none;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 76%,
+    rgba(0, 0, 0, 0.9) 82%,
+    rgba(0, 0, 0, 0.45) 90%,
+    transparent 98%
+  );
+}
+
 .hero-sketch-pad {
-  width: min(100%, 28em, 50svh);
+  position: relative;
+}
+
+.hero-anya {
+  position: absolute;
+  top: -5%;
+  left: -3%;
+  width: 22%;
+  pointer-events: none;
+}
+
+.hero-miku-art {
+  animation: hero-character-bob 3.2s ease-in-out infinite;
+}
+
+.hero-anya-art {
+  animation: hero-character-bob 3.6s 0.45s ease-in-out infinite reverse;
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+@keyframes hero-character-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2.5px);
+  }
+}
+
+.hero-sketch-pad {
+  width: min(100%, 46em);
+  margin-top: -1em;
   margin-inline: auto;
-  rotate: 1.15deg;
+  rotate: 0.65deg;
 }
 
 .hero-doodle {
   position: absolute;
   display: none;
+  opacity: 0.9;
   pointer-events: none;
 }
 
@@ -223,70 +289,80 @@ button {
 
 /* scattered around the centered copy; sized in em so they scale with the hero */
 @media (min-width: 768px) {
+  .hero-sketch-pad {
+    margin-top: -5em;
+    translate: 8em 0;
+  }
+
+  .hero-anya {
+    left: -25%;
+  }
+
   .hero-doodle {
     display: block;
   }
 
-  .hero-doodle--spark {
+  .hero-doodle--arc-pair {
     top: 19%;
     left: 19%;
-    width: 1.9em;
-    height: 1.9em;
-    rotate: 14deg;
+    width: 2.65em;
+    height: 1.25em;
+    rotate: 8deg;
   }
 
-  .hero-doodle--spark2 {
+  .hero-doodle--wonky-rect {
     top: 24%;
     right: 18%;
-    width: 1.4em;
-    height: 1.4em;
-    rotate: -10deg;
+    width: 1.5em;
+    height: 1.875em;
+    rotate: -7deg;
   }
 
-  .hero-doodle--spark3 {
+  .hero-doodle--bean {
     bottom: 12%;
     left: 13%;
-    width: 1em;
-    height: 1em;
-    rotate: 22deg;
+    width: 1.125em;
+    height: 1.125em;
+    rotate: 18deg;
   }
 
-  .hero-doodle--circle {
+  .hero-doodle--ring {
     top: 10%;
     left: 7%;
     width: 1.25em;
     height: 1.25em;
   }
 
-  .hero-doodle--plus {
+  .hero-doodle--smile {
     top: 52%;
     left: 5%;
-    width: 1.1em;
-    height: 1.1em;
+    width: 2.125em;
+    height: 1.125em;
+    rotate: -5deg;
+  }
+
+  .hero-doodle--zigzag {
+    top: 8%;
+    right: 8%;
+    width: 2.625em;
+    height: 1.25em;
+    rotate: 4deg;
+  }
+
+  .hero-doodle--blue-stroke {
+    top: 48%;
+    right: 5%;
+    width: 2.125em;
+    height: 1em;
     rotate: 9deg;
   }
 
-  .hero-doodle--squiggle {
-    top: 8%;
-    right: 8%;
-    width: 2.25em;
-    height: 0.875em;
-    rotate: -6deg;
-  }
-
-  .hero-doodle--triangle {
-    top: 48%;
-    right: 5%;
-    width: 1.25em;
-    height: 1.25em;
-    rotate: -14deg;
-  }
-
-  .hero-doodle--loop {
+  .hero-doodle--coral-ring {
     right: 13%;
     bottom: 9%;
-    width: 1.625em;
-    height: 1.5em;
+    width: 1.0625em;
+    height: 1.0625em;
+    rotate: 12deg;
   }
 }
 
@@ -339,37 +415,32 @@ button {
   line-height: 1.65;
 }
 
+.hero-intro--aside {
+  margin-top: 0.35em;
+}
+
 .viz-feature-section {
   position: relative;
   margin-inline: auto;
   max-width: 80rem;
-  padding: clamp(3.5rem, 8vh, 7rem) 1.5rem clamp(4rem, 8vh, 6.5rem);
+  padding: clamp(4.5rem, 10vh, 8rem) 1.5rem;
 }
 
 .viz-feature-art {
   position: relative;
-  width: 100%;
-  max-width: 440px;
+  width: 92%;
+  max-width: 500px;
   margin-inline: auto;
-}
-
-.viz-beat-number {
-  position: absolute;
-  top: -2.5rem;
-  left: 0;
-  z-index: 0;
-  pointer-events: none;
-  user-select: none;
-  font-family: var(--font-canvas);
-  font-size: 3.75rem;
-  font-weight: 700;
-  opacity: 0.32;
 }
 
 .viz-sketch-pad {
   position: relative;
   z-index: 1;
   padding: 0.5rem;
+}
+
+.viz-feature-art .viz-sketch-pad {
+  padding: 0.25rem;
 }
 
 .viz-feature-heading {
@@ -384,7 +455,7 @@ button {
 .project-cards {
   display: flex;
   flex-direction: column;
-  gap: clamp(3.25rem, 6vw, 5rem);
+  gap: clamp(4.5rem, 7vw, 6rem);
 }
 
 .project-card {
@@ -453,7 +524,7 @@ button {
 
 /* compact shelf under the two featured cards */
 .project-more {
-  margin-top: clamp(3.25rem, 6vw, 5rem);
+  margin-top: clamp(4.5rem, 7vw, 6rem);
 }
 
 .project-more__heading {
@@ -567,11 +638,6 @@ button {
   .project-card__row.is-flip .project-card__info {
     order: 2;
   }
-
-  .project-card__row.is-flip .viz-beat-number {
-    right: 0;
-    left: auto;
-  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -633,7 +699,11 @@ button {
   position: relative;
   margin-inline: auto;
   max-width: 72rem;
-  padding: clamp(3.5rem, 9vh, 7rem) 1.5rem;
+  padding: clamp(5rem, 11vh, 8.5rem) 1.5rem;
+}
+
+.story-block + .story-block {
+  padding-top: clamp(2rem, 4vh, 3rem);
 }
 
 .story-block__row {

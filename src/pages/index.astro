@@ -9,8 +9,8 @@ import BackToTop from '../components/BackToTop.astro';
 ---
 
 <Layout
-  title="Bolt Guo — Frontend Developer & AI Tool Builder"
-  description="A hand-drawn personal site for Bolt Guo's frontend projects, AI tools, and web experiments."
+  title="Bolt Guo | Frontend developer & independent builder"
+  description="Bolt Guo builds interactive learning tools and small software products, from the interface to the code behind it."
 >
   <div class="paper-page text-[var(--ink)]">
     <main class="viz-main">
@@ -19,7 +19,7 @@ import BackToTop from '../components/BackToTop.astro';
       {/* --- Chapter 1: origin --------------------------------------- */}
       <BrushBand
         color="var(--canvas-blue)"
-        title="How I Work"
+        title="How I build"
         outline="#1f1b16"
         id="story"
       />
@@ -31,36 +31,45 @@ import BackToTop from '../components/BackToTop.astro';
         accent="var(--canvas-blue)"
       >
         <p>
-          Docs and courses never stick with me. So when I wanted algorithms to
-          finally make sense, I built VizLearn — visual lessons for arrays,
-          trees, and graphs. My React 19 and Vue 3 "notes" turned into full
-          learning systems with dozens of lessons and real URLs.
+          Reading gives me the shape of an idea. It clicks only after I can
+          change an input, step through the result, and see where my mental
+          model breaks.
         </p>
-        <p>If I can't build it, I don't really know it yet.</p>
+        <p>
+          That's how a small binary-search demo turned into VizLearn. I took the
+          same approach with my React and Vue notes: each concept became
+          something I could run and inspect.
+        </p>
+        <p>The bugs are useful. They show me what I don't understand yet.</p>
       </StoryBlock>
 
       <StoryBlock
         eyebrow="What I ship"
-        title="Small tools that scratch real itches."
+        title="Most projects start with one annoyance."
         sketch="ship"
         flip
         accent="var(--canvas-lilac)"
       >
         <p>
-          Most of my projects start as a daily annoyance. Wondering where my AI
-          tokens went became AouoAI, a chart-driven usage notebook. Watermarks
-          on generated images became a little Vue tool that strips them locally.
+          Sometimes it's a watermark I want to remove without uploading the
+          image. Sometimes it's a QR code I want on my Lock Screen. I build the
+          smallest useful version first, then see if the idea deserves more.
         </p>
         <p>
-          Nothing here is a startup pitch — just problems I had, solved in
-          public.
+          I take each project from interface to release myself. After living
+          with it for a while, I keep the parts worth maintaining and cut the
+          rest.
+        </p>
+        <p>
+          Some become products. Others solve the problem and stop there. Both
+          are good outcomes.
         </p>
       </StoryBlock>
 
       {/* --- Chapter 2: the work ------------------------------------- */}
       <BrushBand
         color="var(--canvas-lilac)"
-        title="Things I've Built"
+        title="What I've built"
         outline="#1f1b16"
         id="projects"
       />
@@ -68,7 +77,12 @@ import BackToTop from '../components/BackToTop.astro';
       <Projects />
 
       {/* --- Chapter 3: contact -------------------------------------- */}
-      <BrushBand color="#7b8cff" title="Say Hi!" outline="#1f1b16" id="contact">
+      <BrushBand
+        color="#7b8cff"
+        title="Say hello"
+        outline="#1f1b16"
+        id="contact"
+      >
         <div class="band-cta">
           <a class="band-btn" href="mailto:hello@aouos.com">hello@aouos.com</a>
         </div>

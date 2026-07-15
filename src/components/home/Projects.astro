@@ -13,7 +13,7 @@ const MINI_ACCENT = ['#CA8A04', '#DB2777', '#059669', '#DC2626', '#2563EB'];
 <section class="viz-feature-section">
   <div class="mb-14 max-w-2xl">
     <p class="viz-kicker">Projects</p>
-    <h2 class="viz-feature-heading">Start with these two.</h2>
+    <h2 class="viz-feature-heading">Two projects I'd show you first.</h2>
   </div>
 
   <ul class="project-cards">
@@ -39,19 +39,12 @@ const MINI_ACCENT = ['#CA8A04', '#DB2777', '#059669', '#DC2626', '#2563EB'];
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Visit {title}
+                  Open {title}
                   <Icon name="arrow-up-right" size={18} />
                 </a>
               </div>
 
               <div class="viz-feature-art">
-                <span
-                  aria-hidden="true"
-                  class="viz-beat-number"
-                  style={`color: ${accent}`}
-                >
-                  {String(index + 1).padStart(2, '0')}
-                </span>
                 <div
                   class="viz-sketch-pad"
                   style={`rotate: ${TILE_ROTATION[index % TILE_ROTATION.length]}deg`}
@@ -60,8 +53,8 @@ const MINI_ACCENT = ['#CA8A04', '#DB2777', '#059669', '#DC2626', '#2563EB'];
                     class="sketch-canvas"
                     data-sketch="project"
                     data-project={id}
-                    width="480"
-                    height="260"
+                    width="560"
+                    height="320"
                     aria-hidden="true"
                   />
                 </div>
@@ -74,7 +67,7 @@ const MINI_ACCENT = ['#CA8A04', '#DB2777', '#059669', '#DC2626', '#2563EB'];
   </ul>
 
   <div class="project-more">
-    <h3 class="project-more__heading">…and the rest of the shelf.</h3>
+    <h3 class="project-more__heading">More from the workbench.</h3>
     <ul class="project-mini-grid">
       {
         rest.map(({ title, description, tech, link }, index) => {

@@ -1,15 +1,11 @@
 ---
 import Icon from '../Icon.astro';
-import { projects, socials } from '../../data/projects';
+import { projectCategories, projects, socials } from '../../data/projects';
 
-const columns = [
-  { title: 'Websites', kind: 'website' },
-  { title: 'Apps & tools', kind: 'tool' },
-  { title: 'Extensions', kind: 'extension' },
-]
-  .map((column) => ({
-    ...column,
-    items: projects.filter((p) => p.kind === column.kind),
+const columns = projectCategories
+  .map(({ key, title }) => ({
+    title,
+    items: projects.filter((p) => p.category === key),
   }))
   .filter((column) => column.items.length > 0);
 
@@ -23,13 +19,13 @@ const columnLink =
   <div class="mx-auto max-w-7xl px-6 py-20">
     <div
       class:list={[
-        'grid grid-cols-2 gap-x-8 gap-y-12 md:gap-x-10',
+        'grid grid-cols-1 gap-x-8 gap-y-12 md:gap-x-10',
         columns.length >= 3
           ? 'md:grid-cols-[9fr_5fr_5fr_5fr]'
           : 'md:grid-cols-[9fr_5fr_5fr]',
       ]}
     >
-      <div class="col-span-2 md:col-span-1">
+      <div class="col-span-1">
         <a
           class="inline-flex items-center gap-2 no-underline"
           href="/"
@@ -43,8 +39,8 @@ const columnLink =
           </span>
         </a>
         <p class="mt-3 text-sm leading-6 text-[rgba(74,65,56,0.82)]">
-          Bolt Guo's projects, tools, and small product experiments — it's
-          boltguo pretty much everywhere.
+          A home for the products, tools, and learning projects I build. I'm
+          boltguo pretty much everywhere else.
         </p>
         <div class="mt-3 -ml-3 flex items-center gap-1">
           {
@@ -85,7 +81,7 @@ const columnLink =
     <p
       class="font-canvas mt-14 border-t border-black/5 pt-6 text-sm text-[rgba(74,65,56,0.78)]"
     >
-      © 2026 AOUOS · drawn and coded by Bolt Guo
+      © 2026 AOUOS · Drawn and coded by Bolt Guo
     </p>
   </div>
 </footer>

@@ -1,0 +1,12 @@
+# Legacy pages now represented on the one-page portfolio.
+/about /#story 301
+/about/ /#story 301
+/projects /#projects 301
+/projects/ /#projects 301
+/works /#projects 301
+/works/ /#projects 301
+
+# The blog has been retired.
+/blog / 301
+/blog/ / 301
+/blog/* / 301

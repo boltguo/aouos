@@ -645,10 +645,13 @@ button {
 /* ------------------------------------------------------------------ */
 
 .hand-filters {
-  position: absolute;
-  width: 0;
-  height: 0;
+  position: fixed;
+  top: -9999px;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .brush-band {
@@ -692,6 +695,50 @@ button {
   -webkit-text-stroke: clamp(3px, 0.65vw, 6px) var(--band-ink, var(--ink));
   paint-order: stroke fill;
   filter: url(#rough-ink);
+}
+
+/*
+ * iOS WebKit can paint CSS-referenced SVG displacement filters as a black
+ * tile at the document origin. Keep the hand-drawn edge there without asking
+ * WebKit to composite an HTML element through the SVG filter pipeline.
+ */
+@media (hover: none) and (pointer: coarse) {
+  .brush-band__paint {
+    --ios-brush-edge: polygon(
+      0 3%,
+      7% 1%,
+      15% 2.5%,
+      24% 0%,
+      34% 2%,
+      44% 0.5%,
+      54% 2.5%,
+      64% 0.5%,
+      74% 2%,
+      84% 0%,
+      93% 2%,
+      100% 1%,
+      100% 97%,
+      93% 99%,
+      84% 97.5%,
+      74% 100%,
+      64% 98%,
+      54% 99.5%,
+      44% 97.5%,
+      34% 100%,
+      24% 98%,
+      15% 99.5%,
+      7% 97%,
+      0 99%
+    );
+
+    filter: none;
+    -webkit-clip-path: var(--ios-brush-edge);
+    clip-path: var(--ios-brush-edge);
+  }
+
+  .chapter-title {
+    filter: none;
+  }
 }
 
 /* Narrative story block: copy beside a roughjs sketch */

@@ -9,6 +9,7 @@ import {
   prepareCanvas,
   pushDrawable,
   rect,
+  text,
 } from './core';
 
 type ShapeOptions = {
@@ -44,9 +45,7 @@ const drawVizLearnSketch = (canvas: HTMLCanvasElement) => {
 
   const baseline = 264;
   const chartOffsetX = -18;
-  const barX = [36, 78, 120, 162, 204, 246].map(
-    (x) => x + chartOffsetX
-  );
+  const barX = [36, 78, 120, 162, 204, 246].map((x) => x + chartOffsetX);
   const barH = [82, 138, 188, 112, 160, 98];
   const compare = [false, true, true, false, false, false];
   barX.forEach((x, index) => {
@@ -150,202 +149,265 @@ const drawVizLearnSketch = (canvas: HTMLCanvasElement) => {
   return env;
 };
 
-// CodePin: a QR code moving from the app to a Live Activity surface
-const drawCodePinSketch = (canvas: HTMLCanvasElement) => {
+// KanaPlanet: the daily learning route and kana practice grid
+const drawKanaPlanetSketch = (canvas: HTMLCanvasElement) => {
   const env = prepareCanvas(canvas, 560, 320);
   if (!env) return null;
 
+  const kanaRed = '#B83A2D';
+  const kanaRedSoft = '#F3D8D0';
+  const kanaCream = '#FBF7EE';
+  const kanaLine = '#D9CFBC';
+  const kanaTeal = '#225564';
+
+  // Main desktop learning dashboard.
   rect(env, {
-    x: 38,
-    y: 14,
-    width: 232,
-    height: 292,
-    fill: palette.empty.bg,
+    x: 18,
+    y: 22,
+    width: 366,
+    height: 276,
+    fill: kanaCream,
     stroke: INK,
     strokeWidth: 2.8,
-    roughness: 0.85,
-    radius: 30,
+    roughness: 0.9,
+    radius: 18,
     seed: env.seed + 1,
   });
-  rect(env, {
-    x: 105,
-    y: 28,
-    width: 98,
-    height: 22,
-    fill: INK,
-    stroke: INK,
-    strokeWidth: 1.5,
-    roughness: 0.65,
-    radius: 10,
-    seed: env.seed + 2,
-  });
-
-  rect(env, {
-    x: 72,
-    y: 76,
-    width: 164,
-    height: 164,
-    fill: '#ffffff',
-    stroke: palette.idle.border,
-    strokeWidth: 2.7,
-    roughness: 0.75,
-    radius: 20,
-    seed: env.seed + 3,
-  });
-
-  const finder = (
-    x: number,
-    y: number,
-    size: number,
-    seed: number,
-    stroke = INK
-  ) => {
-    rect(env, {
-      x,
-      y,
-      width: size,
-      height: size,
-      fill: 'transparent',
-      stroke,
-      strokeWidth: Math.max(2.2, size * 0.14),
-      roughness: 0.55,
-      radius: 2,
-      seed,
-    });
-    rect(env, {
-      x: x + size * 0.32,
-      y: y + size * 0.32,
-      width: size * 0.36,
-      height: size * 0.36,
-      fill: stroke,
-      stroke,
-      strokeWidth: 1,
-      roughness: 0.45,
-      radius: 1,
-      seed: seed + 1,
-    });
-  };
-  finder(90, 94, 36, env.seed + 10);
-  finder(182, 94, 36, env.seed + 12);
-  finder(90, 186, 36, env.seed + 14);
-
-  const modules: [number, number][] = [
-    [140, 98],
-    [152, 98],
-    [140, 110],
-    [164, 122],
-    [140, 146],
-    [152, 146],
-    [176, 146],
-    [188, 158],
-    [140, 170],
-    [164, 182],
-    [176, 194],
-    [200, 206],
-    [152, 218],
-    [176, 218],
-  ];
-  modules.forEach(([x, y], index) => {
-    rect(env, {
-      x,
-      y,
-      width: 9,
-      height: 9,
-      fill: INK,
-      stroke: INK,
-      strokeWidth: 1,
-      roughness: 0.45,
-      radius: 1,
-      seed: env.seed + 20 + index,
-    });
-  });
-
-  line(env, 118, 270, 190, 270, env.seed + 40, PENCIL, 3, 0.8);
-  arrow(env, 280, 158, 320, 158, env.seed + 41, palette.idle.border);
-
-  rect(env, {
-    x: 326,
-    y: 58,
-    width: 212,
-    height: 118,
-    fill: '#ffffff',
-    stroke: INK,
-    strokeWidth: 2.6,
-    roughness: 0.9,
-    radius: 30,
-    seed: env.seed + 42,
-  });
-  rect(env, {
-    x: 346,
-    y: 78,
-    width: 88,
-    height: 25,
-    fill: INK,
-    stroke: INK,
-    strokeWidth: 1.4,
-    roughness: 0.55,
-    radius: 13,
-    seed: env.seed + 43,
-  });
-  rect(env, {
-    x: 458,
-    y: 78,
-    width: 58,
-    height: 58,
-    fill: palette.idle.bg,
-    stroke: palette.idle.border,
-    strokeWidth: 2.1,
-    roughness: 0.65,
-    radius: 10,
-    seed: env.seed + 44,
-  });
-  finder(470, 90, 14, env.seed + 45, palette.idle.border);
-  finder(491, 90, 14, env.seed + 47, palette.idle.border);
-  finder(470, 111, 14, env.seed + 49, palette.idle.border);
-
-  [palette.idle, palette.comparing, palette.matched].forEach((tone, index) => {
+  line(env, 18, 54, 384, 54, env.seed + 2, kanaLine, 2, 0.8);
+  [36, 50, 64].forEach((cx, index) => {
     ellipse(env, {
-      cx: 366 + index * 34,
-      cy: 139,
-      width: 20,
-      height: 20,
-      fill: tone.bg,
-      stroke: tone.border,
-      strokeWidth: 2,
-      roughness: 0.8,
-      seed: env.seed + 52 + index,
+      cx,
+      cy: 38,
+      width: 7,
+      height: 7,
+      fill: index === 0 ? kanaRedSoft : palette.empty.bg,
+      stroke: index === 0 ? kanaRed : PENCIL,
+      strokeWidth: 1.3,
+      roughness: 0.6,
+      seed: env.seed + 3 + index,
     });
   });
 
-  const tiles = [
-    { x: 340, tone: palette.comparing },
-    { x: 416, tone: palette.matched },
-    { x: 492, tone: palette.minimum },
-  ] as const;
-  tiles.forEach(({ x, tone }, index) => {
+  // Compact left navigation with the KanaPlanet mark.
+  rect(env, {
+    x: 30,
+    y: 66,
+    width: 66,
+    height: 218,
+    fill: '#FFFFFF',
+    stroke: kanaLine,
+    strokeWidth: 2,
+    roughness: 0.8,
+    radius: 14,
+    seed: env.seed + 7,
+  });
+  rect(env, {
+    x: 44,
+    y: 80,
+    width: 38,
+    height: 38,
+    fill: kanaRed,
+    stroke: kanaRed,
+    strokeWidth: 1.8,
+    roughness: 0.7,
+    radius: 10,
+    seed: env.seed + 8,
+  });
+  text(env, 'あ', 63, 107, 25, '#FFFFFF', 'center', 700, 'serif');
+  [136, 172, 208, 244].forEach((cy, index) => {
+    const active = index === 0;
+    rect(env, {
+      x: 40,
+      y: cy,
+      width: 46,
+      height: 24,
+      fill: active ? kanaRedSoft : 'transparent',
+      stroke: active ? kanaRedSoft : 'transparent',
+      strokeWidth: 1,
+      roughness: 0.5,
+      radius: 8,
+      seed: env.seed + 9 + index,
+    });
+    line(
+      env,
+      50,
+      cy + 12,
+      76,
+      cy + 12,
+      env.seed + 14 + index,
+      active ? kanaRed : PENCIL,
+      active ? 3 : 2,
+      0.7
+    );
+  });
+
+  // Greeting and today plan.
+  text(env, 'こんにちは', 116, 76, 17, INK, 'left', 700, 'serif');
+  line(env, 116, 86, 194, 86, env.seed + 20, PENCIL, 1.8, 0.7);
+  rect(env, {
+    x: 110,
+    y: 98,
+    width: 256,
+    height: 94,
+    fill: kanaRed,
+    stroke: kanaRed,
+    strokeWidth: 2.4,
+    roughness: 0.9,
+    radius: 15,
+    seed: env.seed + 21,
+  });
+  text(env, '今日计划', 128, 119, 11, '#FFFFFF', 'left', 700, 'sans-serif');
+  [124, 230].forEach((x, index) => {
     rect(env, {
       x,
-      y: 208,
-      width: 58,
-      height: 58,
-      fill: tone.bg,
-      stroke: tone.border,
-      strokeWidth: 2.2,
-      roughness: 0.85,
-      radius: 13,
-      seed: env.seed + 60 + index,
+      y: 130,
+      width: index === 0 ? 94 : 120,
+      height: 30,
+      fill: '#D56B61',
+      stroke: '#D56B61',
+      strokeWidth: 1.4,
+      roughness: 0.7,
+      radius: 9,
+      seed: env.seed + 22 + index,
     });
+    ellipse(env, {
+      cx: x + 14,
+      cy: 145,
+      width: 18,
+      height: 18,
+      fill: '#FFFFFF',
+      stroke: '#FFFFFF',
+      strokeWidth: 1,
+      roughness: 0.5,
+      seed: env.seed + 24 + index,
+    });
+    text(env, String(index + 1), x + 14, 150, 12, kanaRed, 'center', 700);
+  });
+  rect(env, {
+    x: 124,
+    y: 166,
+    width: 228,
+    height: 16,
+    fill: '#FFFFFF',
+    stroke: '#FFFFFF',
+    strokeWidth: 1,
+    roughness: 0.55,
+    radius: 6,
+    seed: env.seed + 26,
+  });
+
+  // Progress and the daily false-friend word.
+  rect(env, {
+    x: 110,
+    y: 204,
+    width: 256,
+    height: 42,
+    fill: '#FFFFFF',
+    stroke: kanaLine,
+    strokeWidth: 1.8,
+    roughness: 0.75,
+    radius: 10,
+    seed: env.seed + 27,
+  });
+  text(env, '入门打底', 124, 222, 12, INK, 'left', 700, 'serif');
+  line(env, 124, 234, 350, 234, env.seed + 28, kanaLine, 4, 0.6);
+  line(env, 124, 234, 164, 234, env.seed + 29, kanaTeal, 4, 0.6);
+  rect(env, {
+    x: 110,
+    y: 256,
+    width: 256,
+    height: 27,
+    fill: kanaRedSoft,
+    stroke: kanaRedSoft,
+    strokeWidth: 1,
+    roughness: 0.65,
+    radius: 8,
+    seed: env.seed + 30,
+  });
+  text(env, '手紙  →  信', 128, 275, 14, kanaRed, 'left', 700, 'serif');
+
+  // Kana chart shown beside the dashboard.
+  rect(env, {
+    x: 402,
+    y: 36,
+    width: 140,
+    height: 248,
+    fill: '#FFFFFF',
+    stroke: kanaLine,
+    strokeWidth: 2.2,
+    roughness: 0.85,
+    radius: 17,
+    seed: env.seed + 31,
+  });
+  text(env, '五十音', 472, 59, 18, INK, 'center', 700, 'serif');
+  rect(env, {
+    x: 416,
+    y: 70,
+    width: 112,
+    height: 22,
+    fill: '#E7E1D7',
+    stroke: kanaLine,
+    strokeWidth: 1.2,
+    roughness: 0.6,
+    radius: 10,
+    seed: env.seed + 32,
+  });
+  rect(env, {
+    x: 416,
+    y: 70,
+    width: 56,
+    height: 22,
+    fill: '#FFFFFF',
+    stroke: kanaLine,
+    strokeWidth: 1.1,
+    roughness: 0.55,
+    radius: 10,
+    seed: env.seed + 33,
+  });
+  const kana = [
+    'あ',
+    'い',
+    'う',
+    'え',
+    'お',
+    'か',
+    'き',
+    'く',
+    'け',
+    'こ',
+    'さ',
+    'し',
+  ];
+  kana.forEach((value, index) => {
+    const col = index % 3;
+    const row = Math.floor(index / 3);
+    const x = 416 + col * 38;
+    const y = 105 + row * 38;
     rect(env, {
-      x: x + 17,
-      y: 225,
-      width: 24,
-      height: 24,
-      fill: '#ffffff',
-      stroke: tone.border,
-      strokeWidth: 1.8,
-      roughness: 0.6,
-      radius: 4,
-      seed: env.seed + 64 + index,
+      x,
+      y,
+      width: 34,
+      height: 31,
+      fill: kanaCream,
+      stroke: kanaLine,
+      strokeWidth: 1.3,
+      roughness: 0.65,
+      radius: 7,
+      seed: env.seed + 34 + index,
+    });
+    text(env, value, x + 17, y + 22, 16, INK, 'center', 400, 'serif');
+  });
+  [424, 454, 484, 514].forEach((x, index) => {
+    ellipse(env, {
+      cx: x,
+      cy: 267,
+      width: index === 0 ? 9 : 6,
+      height: index === 0 ? 9 : 6,
+      fill: index === 0 ? kanaRed : kanaLine,
+      stroke: index === 0 ? kanaRed : kanaLine,
+      strokeWidth: 1,
+      roughness: 0.55,
+      seed: env.seed + 50 + index,
     });
   });
   return env;
@@ -807,7 +869,7 @@ const projectSketches: Record<
   (canvas: HTMLCanvasElement) => DrawEnv | null
 > = {
   '01': drawVizLearnSketch,
-  '02': drawCodePinSketch,
+  '02': drawKanaPlanetSketch,
   learn: drawLearnSketch,
   ship: drawShipSketch,
 };

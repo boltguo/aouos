@@ -18,31 +18,31 @@ export const projects: readonly Project[] = [
     id: '01',
     title: 'VizLearn',
     description:
-      'Step through algorithms and AI concepts one state at a time. The code, visualization, inputs, and execution log move together, so you can see why each step happens.',
+      'Change an input and step through what happens next. The code, visualization, and execution log stay in sync, so the result never feels like a magic trick.',
     tech: ['Algorithms', 'AI & CS'],
     link: 'https://vizlearn.app/',
     category: 'product',
     featured: true,
     proof:
-      '64 free interactive lessons covering foundations, algorithms, AI, and computer science.',
+      'Free to use in the browser, with lessons on algorithms, AI, and computer science.',
   },
   {
     id: '02',
     title: 'KanaPlanet',
     description:
-      'Learn Japanese with a daily plan that brings spaced repetition, structured lessons, focused drills, and AI conversation practice together.',
+      'KanaPlanet builds a daily plan from your lessons and review queue, so you always know what to study next.',
     tech: ['Japanese Learning', 'Spaced Repetition'],
     link: 'https://kanaplanet.aouos.com/',
     category: 'product',
     featured: true,
     proof:
-      'From kana to N5: review forecasts, listening and reading practice, and scenario-based AI conversation in one learning path.',
+      'Lessons run from kana through N1, with listening, reading, and AI conversation practice along the way.',
   },
   {
     id: '04',
-    title: 'AOUI',
+    title: 'AOUI (WIP)',
     description:
-      'A compact UI reference for the CSS-variable themes, buttons, cards, forms, tables, and feedback patterns used across AOUOS projects.',
+      'A work-in-progress UI reference for the CSS-variable themes, buttons, cards, forms, tables, and feedback patterns used across AOUOS projects.',
     tech: ['Design Tokens', 'Components'],
     link: 'https://aoui.aouos.com/',
     category: 'tool',
@@ -71,16 +71,16 @@ export const projects: readonly Project[] = [
     id: '07',
     title: 'CodePin',
     description:
-      "Keep Wi-Fi, contact, and check-in QR codes on your iPhone's Lock Screen or Dynamic Island, ready when you need them.",
-    tech: ['iOS', 'Live Activities'],
+      'Make a QR code or barcode, or scan one with the camera or from a photo. Keep it in history, pin it to the Lock Screen or Dynamic Island, and export it as HD or SVG. Pro sync uses your private iCloud database.',
+    tech: ['QR & Barcodes', 'Local-first', 'SVG & iCloud'],
     link: 'https://codepin.aouos.com/',
     category: 'product',
   },
   {
     id: '03',
-    title: 'AOUO (Archived)',
+    title: 'AOUO (Pre-alpha)',
     description:
-      'An archived pre-alpha experiment in local-first agent apps. Each isolated .aouo pack bundled its own skills, memory, storage, schedules, permissions, and interface.',
+      'A pre-alpha take on local-first agent apps. Each .aouo pack keeps its skills and data inside a separate app boundary, with its own schedule, permissions, and UI.',
     tech: ['Agent Runtime', 'Local-first'],
     link: 'https://aouo.ai/',
     category: 'tool',

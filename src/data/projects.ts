@@ -30,13 +30,13 @@ export const projects: readonly Project[] = [
     id: '02',
     title: 'KanaPlanet',
     description:
-      'KanaPlanet builds a daily plan from your lessons and review queue, so you always know what to study next.',
-    tech: ['Japanese Learning', 'Spaced Repetition'],
+      "I couldn't find a Japanese-learning tool that felt right, so I built the whole thing: CSV as the content source of truth, TTS audio, KanjiVG stroke order, an SRS review engine, pronunciation scoring, and AI conversations for real-life situations.",
+    tech: ['Expo', 'Cloudflare', 'Local-first'],
     link: 'https://kanaplanet.aouos.com/',
     category: 'product',
     featured: true,
     proof:
-      'Lessons run from kana through N1, with listening, reading, and AI conversation practice along the way.',
+      "It doesn't promise a test score. I built it to help me actually use Japanese. One Expo monorepo compiles the same application logic for two targets: a native iOS app and a web app deployed to Cloudflare's edge. A local-first data layer keeps them in sync.",
   },
   {
     id: '04',
@@ -103,6 +103,16 @@ export const projects: readonly Project[] = [
     tech: ['Vue 3', 'Composition API'],
     link: 'https://vue.aouos.com',
     category: 'learning',
+    footerOnly: true,
+  },
+  {
+    id: '10',
+    title: 'React Vite CLI',
+    description:
+      'Scaffold a React and Vite project with optional TypeScript, Tailwind CSS, React Router, ESLint and Prettier, and Zustand.',
+    tech: ['React', 'Vite', 'CLI'],
+    link: 'https://www.npmjs.com/package/react-vite',
+    category: 'tool',
     footerOnly: true,
   },
 ] as const;

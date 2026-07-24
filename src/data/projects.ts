@@ -123,29 +123,8 @@ export const projectCategories = [
   { key: 'learning', title: 'Learning notes' },
 ] as const;
 
-/** Social accounts — same handle everywhere. */
+/** Social accounts shown in the site footer. */
 export const socials = [
   { name: 'GitHub', icon: 'github', href: 'https://github.com/boltguo' },
   { name: 'X', icon: 'x', href: 'https://x.com/boltguo' },
-  {
-    name: 'LinkedIn',
-    icon: 'linkedin',
-    href: 'https://www.linkedin.com/in/boltguo/',
-  },
-  {
-    name: 'Telegram',
-    icon: 'telegram',
-    href: 'https://t.me/boltguo',
-  },
-  { name: 'YouTube', icon: 'youtube', href: 'https://youtube.com/@boltguo' },
-  {
-    name: 'Instagram',
-    icon: 'instagram',
-    href: 'https://instagram.com/boltguo',
-  },
-  {
-    name: 'Bilibili',
-    icon: 'bilibili',
-    href: 'https://space.bilibili.com/48999569',
-  },
 ] as const;
